@@ -57,6 +57,31 @@
     .nav-inner { display: flex; justify-content: space-between; align-items: center; }
     .logo { font-family: var(--font-en); font-weight: 600; font-size: 1.25rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
 
+    /* --- Workspace Link Button --- */
+    .workspace-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-en);
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--accent-primary);
+      text-decoration: none;
+      padding: 8px 20px;
+      background: #ffffff;
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      border-radius: 100px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    .workspace-link:hover {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+    }
+
     /* --- Dashboard Section --- */
     .dashboard-section { padding: 120px 0 120px; }
     
@@ -174,7 +199,7 @@
     .download-card {
       display: flex; align-items: center; gap: 20px; padding: 24px;
       background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border); border-radius: 20px;
+      border: 1px solid var(--divider); border-radius: 20px;
       text-decoration: none; color: var(--text-main);
       box-shadow: var(--shadow-base); transition: all 0.3s ease;
     }
@@ -221,6 +246,12 @@
   <nav>
     <div class="container nav-inner">
       <a href="#" class="logo">P-PAC ภาษาไทย</a>
+      
+      <!-- เพิ่มปุ่ม Workspace ไปยังลิงก์ที่กำหนด -->
+      <a href="https://marketingppac-create.github.io/ppacpasathai/ppacworkspace.html" class="workspace-link">
+        Workspace
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+      </a>
     </div>
   </nav>
 
@@ -248,7 +279,7 @@
         <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
       </a>
 
-      <!-- 3. การทำงานของสมองและ Leaning Style/Type -->
+      <!-- 3. การทำงานของสมองและ Learning Style/Type -->
       <a href="https://marketingppac-create.github.io/ppacpasathai/brain.html" class="elevated-card">
         <div class="icon-wrapper">
           <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
