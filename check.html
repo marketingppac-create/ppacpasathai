@@ -1,29 +1,494 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-<title>check</title>
-<base target="_top">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <base target="_top">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>ป้าแป๋วแจกงาน</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Card Style */
+    .task-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .task-card:active { transform: scale(0.98); }
+    .task-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #cbd5e1; }
+    
+    /* Status Colors */
+    .status-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .st-new .status-line { background-color: #3b82f6; }
+    .st-prog .status-line { background-color: #f59e0b; }
+    .st-corr .status-line { background-color: #f43f5e; }
+    .st-pend .status-line { background-color: #a855f7; }
+    .st-comp .status-line { background-color: #10b981; }
+    .st-deliv .status-line { background-color: #94a3b8; }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loader {
+      border: 3px solid #e2e8f0; border-top: 3px solid #3b82f6; border-radius: 50%;
+      width: 24px; height: 24px; animation: spin 0.8s linear infinite;
+    }
+    .modal-backdrop { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(4px); }
+  </style>
 </head>
+<body class="pb-24">
 
-<div align="center">
-<iframe src=" https://script.google.com/macros/s/AKfycbyyCZGljMoVixAgx2cvmNFFhr3ARbeoqjcgRAOhfigykdQchlYMCyg7X27KEt5rPzH-Ew/exec " 
+  <div class="sticky top-0 z-40 bg-white/95 border-b border-slate-200 shadow-sm backdrop-blur">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-2xl shadow-sm border border-blue-200">👵</div>
+        <h1 class="text-xl font-bold text-slate-800 tracking-tight">ป้าแป๋วแจกงาน</h1>
+      </div>
+      <div class="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full border border-slate-200" id="current-date">-</div>
+    </div>
 
-style="
-    position: fixed;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 100%;
-    border: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    z-index: 999999;
-    height: 100%;
-  "></iframe>
+    <div class="max-w-3xl mx-auto px-2">
+      <div class="flex space-x-1 overflow-x-auto py-2 no-scrollbar" id="nav-tabs">
+        <button onclick="switchTab('frontdesk')" id="tab-frontdesk" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">หน้าบ้าน</button>
+        <button onclick="switchTab('assistant')" id="tab-assistant" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold text-slate-500 hover:bg-slate-50 border border-transparent relative">ผู้ช่วย <span id="badge-assistant" class="hidden absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-white"></span></button>
+        <button onclick="switchTab('analyst')" id="tab-analyst" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold text-slate-500 hover:bg-slate-50 border border-transparent relative">นวค. <span id="badge-analyst" class="hidden absolute top-1 right-1 w-2.5 h-2.5 bg-amber-500 rounded-full border border-white"></span></button>
+        <button onclick="switchTab('completed')" id="tab-completed" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold text-slate-500 hover:bg-slate-50 border border-transparent relative">เสร็จสิ้น <span id="badge-completed" class="hidden absolute top-1 right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-white"></span></button>
+      </div>
+    </div>
+  </div>
 
-<div>
+  <main class="max-w-3xl mx-auto px-4 py-4 space-y-6">
+
+    <div id="view-frontdesk" class="view-section">
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 mb-6">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
+          <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wide">สรุปภาพรวม</h2>
+          <input type="month" id="monthPicker" class="text-sm bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-slate-600 outline-none focus:border-blue-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-center"><div class="text-xs text-blue-600 font-medium mb-1">สร้างงาน</div><div id="d-all" class="text-2xl font-bold text-blue-900">0</div></div>
+          <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-center"><div class="text-xs text-emerald-600 font-medium mb-1">เสร็จแล้ว</div><div id="d-comp" class="text-2xl font-bold text-emerald-900">0</div></div>
+          <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 text-center"><div class="text-xs text-amber-600 font-medium mb-1">กำลังทำ</div><div id="d-prog" class="text-lg font-bold text-amber-900">0</div></div>
+          <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 text-center"><div class="text-xs text-purple-600 font-medium mb-1">รอตรวจ</div><div id="d-pend" class="text-lg font-bold text-purple-900">0</div></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> เปิดงานใหม่</h3>
+        <div class="space-y-4">
+          <div><label class="block text-xs font-bold text-slate-500 mb-1">ผู้สร้าง</label><select id="fd-user" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100"></select></div>
+          <div class="grid grid-cols-2 gap-3">
+             <div><label class="block text-xs font-bold text-slate-500 mb-1">ID ลูกค้า</label><input id="fd-customer-id" type="text" placeholder="เช่น C-001" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100"></div>
+             <div><label class="block text-xs font-bold text-slate-500 mb-1">ชื่อลูกค้า</label><input id="fd-customer-name" type="text" placeholder="คุณลูกค้า..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100"></div>
+          </div>
+          <button onclick="handleCreateTask()" id="btn-create" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md active:scale-[0.98]">สร้างงาน</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-assistant" class="view-section hidden space-y-6">
+      <div><h3 class="text-sm font-bold text-slate-500 mb-3 px-1 uppercase tracking-wider">งานใหม่ (New)</h3><div id="list-new" class="space-y-3 min-h-[50px]"></div></div>
+      <div><h3 class="text-sm font-bold text-slate-500 mb-3 px-1 uppercase tracking-wider">กำลังทำ (In Progress)</h3><div id="list-progress" class="space-y-3 min-h-[50px]"></div></div>
+      <div><h3 class="text-sm font-bold text-slate-500 mb-3 px-1 uppercase tracking-wider">ต้องแก้ไข (Correction)</h3><div id="list-correction" class="space-y-3 min-h-[50px]"></div></div>
+    </div>
+
+    <div id="view-analyst" class="view-section hidden"><div id="analyst-groups" class="space-y-6"></div></div>
+
+    <div id="view-completed" class="view-section hidden space-y-6">
+      <div><h3 class="text-sm font-bold text-emerald-600 mb-3 px-1 uppercase tracking-wider">รอส่งลูกค้า</h3><div id="list-completed" class="space-y-3"></div></div>
+      <div><h3 class="text-sm font-bold text-slate-400 mb-3 px-1 uppercase tracking-wider">ประวัติส่งงานแล้ว</h3><div id="list-delivered" class="space-y-3 opacity-90"></div></div>
+    </div>
+
+  </main>
+
+  <div id="loader" class="fixed inset-0 bg-white/90 z-50 flex flex-col justify-center items-center backdrop-blur-sm hidden"><div class="loader mb-2"></div><div class="text-sm font-medium text-slate-500">กำลังโหลด...</div></div>
+  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 px-5 py-3 bg-slate-800 text-white text-sm rounded-full shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-3"><span id="toast-icon">✅</span><span id="toast-msg">Success</span></div>
+
+  <!-- ขยายขนาด Modal ให้ใหญ่ขึ้นสำหรับ PC -->
+  <div id="modal-overlay" class="fixed inset-0 modal-backdrop z-50 hidden flex items-end sm:items-center justify-center sm:p-4">
+    <div id="modal-content" class="bg-white w-full sm:max-w-2xl md:max-w-3xl rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[90vh] border border-slate-200 animate-[fadeIn_0.2s_ease-out]">
+      <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-2xl">
+        <h3 id="modal-title" class="font-bold text-slate-800 text-lg">รายละเอียด</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+      </div>
+      <div id="modal-body" class="p-5 overflow-y-auto"></div>
+      <div id="modal-footer" class="p-4 border-t border-slate-100 bg-slate-50/30 rounded-b-2xl flex flex-col gap-2"></div>
+    </div>
+  </div>
+
+  <!-- 🟢 POP-UP สำหรับกดยืนยันการตรวจผ่าน 🟢 -->
+  <div id="confirm-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-[fadeIn_0.2s_ease-out] border border-slate-200">
+      <div class="text-5xl mb-4">❓</div>
+      <h3 class="text-2xl font-bold text-slate-800 mb-2">ยืนยันการตรวจผ่าน?</h3>
+      <p class="text-slate-600 mb-6 text-base">กรุณาตรวจสอบให้แน่ใจ<br>คุณต้องการยืนยันให้งานนี้ <b>"ผ่าน"</b> ใช่หรือไม่?</p>
+      <div class="flex gap-3">
+        <button onclick="closeConfirm()" class="flex-1 py-3.5 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 text-lg">ยกเลิก</button>
+        <button id="btn-confirm-yes" class="flex-1 py-3.5 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 shadow-md text-lg">✅ ยืนยันผ่าน</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 🔴 🔴 🔴 สำหรับการใช้งานบน GITHUB PAGES 🔴 🔴 🔴
+    // ฝัง URL Web App ของคุณลงไปแล้วเรียบร้อยครับ
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyyCZGljMoVixAgx2cvmNFFhr3ARbeoqjcgRAOhfigykdQchlYMCyg7X27KEt5rPzH-Ew/exec"; 
+
+    if (typeof google === 'undefined') {
+      window.google = { 
+        script: { 
+          run: new Proxy({}, {
+            get: function(target, prop) {
+              return function(...args) {
+                let successCb = null;
+                let failureCb = null;
+                
+                const chain = {
+                  withSuccessHandler: function(cb) { successCb = cb; return chain; },
+                  withFailureHandler: function(cb) { failureCb = cb; return chain; }
+                };
+
+                setTimeout(async () => {
+                  try {
+                    if (!GAS_URL || GAS_URL === "") {
+                      console.warn("⚠️ ยังไม่ได้ใส่ GAS_URL ใช้งานแบบ Mock Data ไปก่อน");
+                      const mockDataMap = {
+                        getUserLists: {frontDesk:['จำลอง 1'], assistants:['จำลอง 2'], analysts:['จำลอง 3']},
+                        getMonthlySummary: {created:{total:0,InProgress:0,PendingAnalyst:0,Completed:0},completedInMonth:0},
+                        getAssistantBadgeCount: 0, getAnalystPendingCount: 0, getCompletedPendingDeliveryCount: 0, getTasks: [], getAuditLog: []
+                      };
+                      if(successCb) successCb(prop in mockDataMap ? mockDataMap[prop] : {status:'success', message:'จำลองการทำงานสำเร็จ (รอใส่ URL)'});
+                      return;
+                    }
+
+                    // สร้าง Request ข้ามโดเมนไปยัง Google Apps Script
+                    const response = await fetch(GAS_URL, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                      body: JSON.stringify({ action: prop, payload: args[0] })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.status === 'success' && successCb) {
+                      // ส่ง Data เพียวๆ กลับไปให้ Frontend ทำงานต่อได้เลย (ไม่ต้องแก้โค้ด Frontend ที่เหลือ)
+                      successCb(result.data);
+                    } else if (result.status === 'error' && failureCb) {
+                      failureCb(result.message);
+                    } else if (successCb) {
+                       // เผื่อ API บางตัวส่งรูปแบบอื่นมา
+                       successCb(result.data || result); 
+                    }
+                  } catch(e) {
+                    if (failureCb) failureCb(e);
+                    else console.error("GAS API Error:", e);
+                  }
+                }, 0);
+
+                return chain;
+              }
+            }
+          })
+        }
+      };
+    }
+
+    let allUsers={}, allTasks=[];
+    let pendingRowComplete = null; 
+    const tabs=['frontdesk','assistant','analyst','completed'];
+    const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+    function showLoader(){$('#loader').classList.remove('hidden')}
+    function hideLoader(){$('#loader').classList.add('hidden')}
+    function showToast(msg,err=false){
+      const t=$('#toast'); $('#toast-msg').textContent=msg; $('#toast-icon').textContent=err?'❌':'✅';
+      t.className=`fixed bottom-6 left-1/2 transform -translate-x-1/2 px-5 py-3 text-white text-sm rounded-full shadow-xl z-50 flex items-center gap-3 transition-all duration-300 ${err?'bg-red-600':'bg-slate-800'}`;
+      t.classList.remove('opacity-0','translate-y-4');
+      setTimeout(()=>t.classList.add('opacity-0','translate-y-4'),3000);
+    }
+
+    function switchTab(tName){
+      tabs.forEach(t=>{
+        const btn=$(`#tab-${t}`), view=$(`#view-${t}`);
+        if(t===tName){
+          btn.className="whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold transition-all bg-blue-50 text-blue-700 border border-blue-200 shadow-sm";
+          view.classList.remove('hidden');
+          if(t!=='frontdesk') loadBoard();
+        }else{
+          btn.className="whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold text-slate-500 hover:bg-slate-50 border border-transparent relative";
+          view.classList.add('hidden');
+        }
+      });
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    window.onload=()=>{
+      $('#current-date').textContent=new Date().toLocaleDateString('th-TH',{day:'numeric',month:'short'});
+      const m=new Date(); $('#monthPicker').value=`${m.getFullYear()}-${String(m.getMonth()+1).padStart(2,'0')}`;
+      $('#monthPicker').addEventListener('change',fetchDashboard);
+      showLoader();
+      google.script.run.withSuccessHandler(u=>{
+        allUsers=u||{frontDesk:[],assistants:[],analysts:[]};
+        $('#fd-user').innerHTML='<option value="" disabled selected>-- เลือกชื่อก่อน --</option>' + allUsers.frontDesk.map(x=>`<option value="${x}">${x}</option>`).join('');
+        fetchDashboard(); updateBadges(); hideLoader();
+      }).getUserLists();
+      
+      // การกดปุ่ม ยืนยันผ่าน ใน Pop-up ยืนยันชั้นที่ 2
+      $('#btn-confirm-yes').addEventListener('click', () => {
+        if(pendingRowComplete !== null) {
+          doAction('complete', pendingRowComplete);
+        }
+        closeConfirm();
+      });
+    };
+
+    function fetchDashboard(){
+      const [y,mm]=$('#monthPicker').value.split('-');
+      google.script.run.withSuccessHandler(d=>{
+        $('#d-all').textContent=d.created.total; $('#d-prog').textContent=d.created.InProgress;
+        $('#d-pend').textContent=d.created.PendingAnalyst; $('#d-comp').textContent=d.created.Completed;
+      }).getMonthlySummary({year:+y,month:+mm});
+    }
+
+    function updateBadges(){
+      const s=(id,c)=>{const e=$(`#badge-${id}`); if(+c>0)e.classList.remove('hidden'); else e.classList.add('hidden');};
+      google.script.run.withSuccessHandler(c=>s('assistant',c)).getAssistantBadgeCount();
+      google.script.run.withSuccessHandler(c=>s('analyst',c)).getAnalystPendingCount();
+      google.script.run.withSuccessHandler(c=>s('completed',c)).getCompletedPendingDeliveryCount();
+    }
+
+    function handleCreateTask(){
+      const btn=$('#btn-create'), d={createdBy:$('#fd-user').value, customerId:$('#fd-customer-id').value.trim(), customerName:$('#fd-customer-name').value.trim()};
+      if(!d.createdBy||!d.customerId||!d.customerName){showToast('กรอกข้อมูลให้ครบ',true);return;}
+      btn.disabled=true; btn.textContent='...';
+      google.script.run.withSuccessHandler(r=>{
+        btn.disabled=false; btn.textContent='สร้างงาน';
+        if(r.status==='success'){showToast('สำเร็จ'); $('#fd-customer-id').value=''; $('#fd-customer-name').value=''; fetchDashboard(); updateBadges();}
+        else showToast(r.message,true);
+      }).createTask(d);
+    }
+
+    function loadBoard(){ showLoader(); google.script.run.withSuccessHandler(renderAll).getTasks(); }
+
+    function renderAll(tasks){
+      allTasks=Array.isArray(tasks)?tasks:[]; updateBadges();
+      ['new','progress','correction','completed','delivered'].forEach(k=>$(`#list-${k}`).innerHTML=''); $('#analyst-groups').innerHTML='';
+      const g={new:[],progress:[],correction:[],pending:[],completed:[],delivered:[]};
+      allTasks.forEach(t=>{
+        if(t.status==='New')g.new.push(t); else if(t.status==='In Progress')g.progress.push(t);
+        else if(t.status==='Correction Needed')g.correction.push(t); else if(t.status==='Pending Analyst')g.pending.push(t);
+        else if(t.status==='Completed')g.completed.push(t); else if(t.status==='Delivered')g.delivered.push(t);
+      });
+      renderList('#list-new',g.new,'st-new'); renderList('#list-progress',g.progress,'st-prog');
+      renderList('#list-correction',g.correction,'st-corr'); renderList('#list-completed',g.completed,'st-comp');
+      renderList('#list-delivered',g.delivered,'st-deliv');
+
+      if(!g.pending.length) $('#analyst-groups').innerHTML=emptyState('ไม่มีงานรอตรวจ');
+      else {
+        const byA={}; g.pending.forEach(t=>{ const k=t.assignedAnalyst||'ไม่ระบุ'; if(!byA[k])byA[k]=[]; byA[k].push(t); });
+        Object.keys(byA).sort().forEach(n=>{
+          const sec=document.createElement('div');
+          sec.innerHTML=`<div class="font-bold text-slate-700 mb-2 px-1 text-sm inline-block rounded-lg py-1 bg-purple-50 border border-purple-100 text-purple-700">🔎 นวค: ${n} (${byA[n].length})</div><div class="space-y-3" id="grp-${n.replace(/\s/g,'_')}"></div>`;
+          $('#analyst-groups').appendChild(sec);
+          byA[n].forEach(t=>sec.querySelector('div[id^="grp-"]').appendChild(createCard(t,'st-pend')));
+        });
+      }
+      hideLoader();
+    }
+
+    function renderList(sel,items,cls){ const c=$(sel); if(!items.length)c.innerHTML=emptyState(); else items.forEach(t=>c.appendChild(createCard(t,cls))); }
+    function emptyState(t='ไม่มีรายการ'){ return `<div class="py-6 text-center text-slate-400 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50 text-xs">${t}</div>`; }
+
+    function createCard(t,cls){
+      const el=document.createElement('div'); el.className=`task-card ${cls}`;
+      const sla=getSlaIcon(t), sub=getSubInfo(t,cls);
+      
+      let extraHint = '';
+      if(cls.includes('st-deliv')) extraHint = `<div class="text-[10px] text-blue-500 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full border border-blue-100">📄 คลิกดูประวัติ</div>`;
+
+      el.innerHTML=`<div class="status-line"></div>
+        <div class="flex justify-between items-start mb-1 pl-2">
+          <div><h4 class="font-bold text-slate-800 text-sm leading-tight mb-1">${t.customerName}</h4><div class="text-xs font-mono text-slate-400 bg-slate-100 inline-block px-1 rounded">${t.customerId}</div></div>
+          <div class="flex flex-col items-end gap-1"><div class="text-lg">${sla}</div>${extraHint}</div>
+        </div>
+        <div class="text-xs text-slate-500 mt-2 border-t border-slate-100 pt-2 pl-2 flex flex-wrap gap-2 items-center">${sub}</div>`;
+      
+      el.onclick=()=>openActionModal(t,cls);
+      return el;
+    }
+
+    function getSlaIcon(t){ if(t.status==='Delivered')return '📦'; if(t.status==='Completed'||t.isCompleted)return '✅'; const d=+t.slaDays||0; return d>=3?'🔥':(d===2?'⚠️':''); }
+    function getSubInfo(t,c){
+      if(c.includes('st-new'))return `<span>👤 ${t.createdBy}</span><span class="text-slate-300">|</span><span>📅 ${t.creationDate.split(' ')[0]}</span>`;
+      if(c.includes('st-pend'))return `<span>ผู้ช่วย: ${t.assignedAssistant}</span>`;
+      if(c.includes('st-comp'))return `<span>นวค: ${t.assignedAnalyst}</span>`;
+      if(c.includes('st-deliv'))return `<span>ส่ง: ${t.deliveredDate.split(' ')[0]}</span>`;
+      return `<span>${t.assignedAssistant||'-'}</span>`;
+    }
+
+    function openModal(t,b,f){ $('#modal-title').textContent=t; $('#modal-body').innerHTML=b; $('#modal-footer').innerHTML=f; $('#modal-overlay').classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    function closeModal(){ $('#modal-overlay').classList.add('hidden'); document.body.style.overflow=''; }
+    
+    // ฟังก์ชันเปิด-ปิด หน้าต่างยืนยัน
+    function confirmCompleteTask(rowNum) {
+      pendingRowComplete = rowNum;
+      $('#confirm-overlay').classList.remove('hidden');
+    }
+    function closeConfirm() {
+      $('#confirm-overlay').classList.add('hidden');
+      pendingRowComplete = null;
+    }
+
+    function getDD(id,l,c,lbl){ return `<div class="mb-3"><label class="text-xs font-bold text-slate-500 mb-1 block">${lbl}</label><select id="${id}" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:ring-1 focus:ring-blue-400"><option value="" disabled ${!c ? 'selected' : ''}>-- เลือกชื่อก่อน --</option>${l.map(u=>`<option value="${u}" ${u===c?'selected':''}>${u}</option>`).join('')}</select></div>`; }
+
+    function viewAudit(tid){
+      showLoader();
+      google.script.run.withSuccessHandler(l=>{
+        hideLoader();
+        const c=l.length?l.map(x=>`<div class="text-sm border-l-2 border-slate-200 pl-3 py-2 mb-1"><div class="font-bold text-slate-700">${x.action} <span class="font-normal text-slate-400">by ${x.byName}</span></div><div class="flex justify-between text-slate-400 mt-1 text-xs"><span>${x.timestamp}</span><span>${x.fromStatus} → ${x.toStatus}</span></div>${x.notes?`<div class="text-slate-700 bg-slate-50 p-2 rounded mt-2 whitespace-pre-wrap border border-slate-100">${x.notes}</div>`:''}</div>`).join(''):'<div class="text-center text-slate-400">ไม่มีประวัติ</div>';
+        $('#modal-body').innerHTML=`<h4 class="font-bold mb-3 text-slate-800 text-lg">Timeline ประวัติการทำงาน</h4>${c}`;
+        $('#modal-footer').innerHTML=`<button onclick="closeModal()" class="w-full py-2.5 bg-slate-100 rounded-lg font-bold text-slate-600 text-base">ปิดหน้าต่าง</button>`;
+        if($('#modal-overlay').classList.contains('hidden')) openModal('ประวัติงาน','','');
+      }).getAuditLog(tid);
+    }
+
+    function openActionModal(t,cls){
+      const auditBtn=`<button onclick="viewAudit('${t.taskId}')" class="text-sm text-blue-500 font-bold underline mb-3 block text-right">ดูประวัติทั้งหมด</button>`;
+      
+      if(cls.includes('st-deliv')){ viewAudit(t.taskId); return; } 
+
+      if(cls.includes('st-new')){
+        const b=`${auditBtn}${getDD('sel-assist',allUsers.assistants,t.assignedAssistant,'เลือกผู้ช่วย')}<div class="bg-blue-50 text-blue-700 text-sm p-3 rounded-lg border border-blue-100">กดเริ่มงาน สถานะจะเปลี่ยนเป็น <b>In Progress</b></div>`;
+        const f=`<button onclick="doAction('claim',${t.rowNum})" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-md text-base">เริ่มงาน</button>`;
+        openModal(`งาน: ${t.customerName}`,b,f);
+      }else if(cls.includes('st-prog')||cls.includes('st-corr')){
+        let ex=''; 
+        if(cls.includes('st-corr')){ 
+          ex=`<div class="bg-rose-50 border border-rose-100 rounded-lg p-4 mb-4 flex justify-between items-center">
+                <div class="text-rose-700 font-bold text-sm">⚠️ งานนี้ถูกสั่งแก้ไข!</div>
+                <button onclick="viewAudit('${t.taskId}')" class="text-sm bg-rose-600 text-white px-4 py-2 rounded shadow-sm hover:bg-rose-700 font-medium transition">คลิกดูจุดที่ต้องแก้</button>
+              </div>`; 
+        }
+        const b=`${auditBtn}${ex}<div class="mb-3"><label class="text-sm font-bold text-slate-500 mb-1 block">ผู้ช่วย</label><div class="p-3 bg-slate-100 rounded-lg text-base text-slate-800 font-bold">${t.assignedAssistant}</div></div>${getDD('sel-analyst',allUsers.analysts,t.assignedAnalyst,'ส่งต่อให้ นวค.')}`;
+        const f=`<button onclick="doAction('sendToAnalyst',${t.rowNum})" class="w-full py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 shadow-md text-base">ส่งตรวจ</button>`;
+        openModal(`งาน: ${t.customerName}`,b,f);
+      }else if(cls.includes('st-pend')){
+        
+        // --- ฟอร์มสั่งแก้ไขชุดใหม่ (Textarea แบบเอา Scrollbar ออก) ---
+        const corrOpts = [
+          { label: "ปก", id: "c-cover" },
+          { group: "P11 - ลักษณะบุคลิกภาพ", items: [{label: "ฟังก์ชั่นการทำงาน", id: "c-p11-1"}] },
+          { label: "P12 - ตารางศักยภาพ", id: "c-p12" },
+          { group: "P13 - การทำงานของสมอง", items: [
+            {label: "ความถนัดการใช้สมอง", id: "c-p13-1"}, {label: "ATD", id: "c-p13-2"},
+            {label: "TRC", id: "c-p13-3"}, {label: "ลักษณะการเรียนรู้", id: "c-p13-4"},
+            {label: "วิธีการเรียนรู้", id: "c-p13-5"}
+          ]},
+          { group: "P14 - สรุปศักยภาพ", items: [
+            {label: "ศักยภาพที่โดดเด่น", id: "c-p14-1"}, {label: "ศักยภาพที่รอการส่งเสริม", id: "c-p14-2"},
+            {label: "ศักยภาพที่มีความแตกต่าง", id: "c-p14-3"}, {label: "ศักยภาพที่ไม่โดดเด่น", id: "c-p14-4"},
+            {label: "อาชีพที่แนะนำ", id: "c-p14-5"}
+          ]},
+          { group: "P15 - จุดแข็งจุดอ่อน", items: [
+            {label: "จุดแข็ง", id: "c-p15-1"}, {label: "จุดอ่อน", id: "c-p15-2"},
+            {label: "กลุ่มงานที่เหมาะสม", id: "c-p15-3"}, {label: "รูปแบบการพัฒนา", id: "c-p15-4"},
+            {label: "หลักสูตรการฝึกอบรม", id: "c-p15-5"}
+          ]},
+          { label: "อื่นๆ", id: "c-other" }
+        ];
+
+        let chksHTML = '';
+        corrOpts.forEach(opt => {
+          if(opt.group) {
+            chksHTML += `<div class="mb-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <div class="font-bold text-base text-slate-800 mb-3 border-b border-slate-100 pb-2 text-blue-800">${opt.group}</div>
+              <div class="space-y-4 pl-1">`;
+            opt.items.forEach(item => {
+              chksHTML += `<div class="flex flex-col">
+                <label class="flex items-start space-x-3 text-slate-800 cursor-pointer mb-2">
+                  <input type="checkbox" class="correction-check mt-1 text-rose-500 rounded focus:ring-0 w-5 h-5" value="${opt.group} -> ${item.label}" data-target="txt-${item.id}" onchange="document.getElementById(this.dataset.target).classList.toggle('hidden', !this.checked)">
+                  <span class="font-bold text-base">${item.label}</span>
+                </label>
+                <textarea id="txt-${item.id}" rows="2" class="hidden w-full border border-slate-300 rounded-lg p-3 text-base outline-none focus:border-rose-400 bg-rose-50/30 resize-y min-h-[80px]" placeholder="พิมพ์รายละเอียดที่ต้องแก้ (กด Enter เพื่อขึ้นบรรทัดใหม่ได้)..."></textarea>
+              </div>`;
+            });
+            chksHTML += `</div></div>`;
+          } else {
+            chksHTML += `<div class="mb-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <div class="flex flex-col">
+                <label class="flex items-start space-x-3 text-slate-800 cursor-pointer font-bold mb-2">
+                  <input type="checkbox" class="correction-check mt-1 text-rose-500 rounded focus:ring-0 w-5 h-5" value="${opt.label}" data-target="txt-${opt.id}" onchange="document.getElementById(this.dataset.target).classList.toggle('hidden', !this.checked)">
+                  <span class="font-bold text-base">${opt.label}</span>
+                </label>
+                <textarea id="txt-${opt.id}" rows="2" class="hidden w-full border border-slate-300 rounded-lg p-3 text-base outline-none focus:border-rose-400 bg-rose-50/30 resize-y min-h-[80px]" placeholder="พิมพ์รายละเอียดที่ต้องแก้ (กด Enter เพื่อขึ้นบรรทัดใหม่ได้)..."></textarea>
+              </div>
+            </div>`;
+          }
+        });
+
+        const b=`${auditBtn}
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-5">
+            <div class="text-sm text-slate-500">ผู้รับมอบหมาย: <span class="font-bold text-slate-800 text-lg ml-2">${t.assignedAssistant}</span></div>
+          </div>
+          <div class="border-t border-slate-200 pt-4">
+            <div class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">❌ สั่งแก้ไขงาน (เลือกหัวข้อที่ต้องการให้แก้)</div>
+            <div class="bg-slate-50/50 p-2 rounded-xl">${chksHTML}</div>
+          </div>`;
+          
+        // 🔴 ปรับปรุง Layout ปุ่มกด: สั่งแก้อยู่บน (ปุ่มใหญ่ สีแดง) ตรวจผ่านอยู่ล่าง
+        const f=`<div class="flex flex-col gap-3">
+          <button onclick="doAction('requestCorrection',${t.rowNum})" class="w-full py-4 bg-rose-100 border-2 border-rose-300 text-rose-800 rounded-xl font-bold hover:bg-rose-200 text-lg shadow-sm transition-all">❌ กดเพื่อส่งกลับไปแก้ไข</button>
+          <button onclick="confirmCompleteTask(${t.rowNum})" class="w-full py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 shadow-md text-base mt-2">✅ ตรวจผ่าน (เสร็จสิ้น)</button>
+        </div>`;
+        
+        openModal(`ตรวจงาน: ${t.customerName}`,b,f);
+
+      }else if(cls.includes('st-comp')){
+        const b=`${auditBtn}${getDD('sel-fd-deliver',allUsers.frontDesk,t.createdBy,'ใครเป็นคนส่งลูกค้า?')}<div class="text-sm text-slate-500 bg-emerald-50 p-4 rounded-lg border border-emerald-100 mt-2">งานนี้ผ่านการตรวจสอบแล้ว โดย <b>${t.assignedAnalyst}</b></div>`;
+        const f=`<button onclick="doAction('deliver',${t.rowNum})" class="w-full py-3.5 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-900 shadow-md text-base">บันทึกส่งลูกค้า</button>`;
+        openModal(`ส่งงาน: ${t.customerName}`,b,f);
+      }
+    }
+
+    function doAction(act,row){
+      const t=allTasks.find(x=>x.rowNum===row); if(!t)return; let p={rowNum:row}, api='';
+      if(act==='claim'){ p.assistantName=$('#sel-assist').value; if(!p.assistantName){showToast('ระบุผู้ช่วย',true);return;} api='claimTask'; }
+      else if(act==='sendToAnalyst'){ p.assistantName=t.assignedAssistant; p.analystName=$('#sel-analyst').value; if(!p.analystName){showToast('ระบุ นวค.',true);return;} api='assignToAnalyst'; }
+      
+      // ดึงข้อมูลการแก้ไขแบบใหม่
+      else if(act==='requestCorrection'){ 
+        p.analystName=t.assignedAnalyst; 
+        p.correctionPages=[];
+        document.querySelectorAll('.correction-check').forEach(chk => {
+          if(chk.checked) {
+            const txt = document.getElementById(chk.dataset.target).value.trim();
+            p.correctionPages.push(`▶️ ${chk.value}${txt ? \`\n   ↳ ${txt}\` : ''}`); // จัดฟอร์แมตให้อ่านง่าย
+          }
+        });
+        if(!p.correctionPages.length){showToast('กรุณาเลือกหัวข้อที่ต้องแก้',true);return;} 
+        api='requestCorrection'; 
+      }
+      
+      else if(act==='complete'){ p.analystName=t.assignedAnalyst; api='completeTask'; }
+      else if(act==='deliver'){ p.frontDeskName=$('#sel-fd-deliver').value; if(!p.frontDeskName){showToast('ระบุคนส่ง',true);return;} api='deliverToCustomer'; }
+      
+      const b=$('#modal-footer button'); if(b){b.disabled=true; b.textContent='...';}
+      google.script.run.withSuccessHandler(r=>{ closeModal(); if(r.status==='success'){showToast(r.message); loadBoard();} else showToast(r.message,true); }).withFailureHandler(()=>{showToast('Error',true);closeModal();})[api](p);
+    }
+  </script>
 </body>
 </html>
