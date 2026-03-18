@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-PAC Workspace</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (English) & Prompt (Thai) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Sukhumvit Set', 'Prompt', '-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'sans-serif'],
+                    },
+                    colors: {
+                        'apple-dark': '#1d1d1f',       /* Apple's signature dark text */
+                        'apple-gray': '#f5f5f7',       /* Apple's standard light gray */
+                        'apple-gray-hover': '#e8e8ed',
+                        'apple-blue': '#0071e3',
+                    },
+                    boxShadow: {
+                        'soft-wide': '0 10px 40px -10px rgba(0,0,0,0.05)',
+                        'soft-wide-hover': '0 20px 40px -10px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fbfbfd; /* Slightly off-white background to enhance depth */
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-center py-16 selection:bg-[#0083fe] selection:text-white">
+
+    <main class="w-full max-w-5xl mx-auto px-6 text-center relative">
+        
+        <!-- Background Ambient Glow (Optional for extra depth) -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-to-r from-[#00fff0] to-[#0083fe] rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+
+        <!-- Large Minimalist Title -->
+        <h1 class="text-5xl md:text-7xl font-semibold tracking-tighter mb-12 mt-8 text-[#333] relative z-10 pb-2">
+            P-PAC Workspace
+        </h1>
+
+        <!-- Buttons Grid -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 relative z-10">
+            
+            <!-- Button 1: สร้าง -->
+            <a href="https://marketingppac-create.github.io/ppacpasathai/genarate.html" 
+               class="w-full sm:w-[200px] px-8 py-3.5 bg-gradient-to-r from-[#00fff0] to-[#0083fe] text-white rounded-full font-medium text-[17px] hover:shadow-[0_10px_30px_-10px_rgba(0,131,254,0.6)] hover:-translate-y-0.5 transition-all duration-300">
+                สร้าง
+            </a>
+            
+            <!-- Button 2: ส่งงาน/ตรวจสอบ -->
+            <a href="https://script.google.com/macros/s/AKfycbyyCZGljMoVixAgx2cvmNFFhr3ARbeoqjcgRAOhfigykdQchlYMCyg7X27KEt5rPzH-Ew/exec" 
+               class="w-full sm:w-[200px] px-8 py-3.5 bg-apple-gray text-apple-dark rounded-full font-medium text-[17px] hover:bg-apple-gray-hover transition-colors duration-300">
+                ส่งงาน/ตรวจสอบ
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
