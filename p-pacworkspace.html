@@ -20,7 +20,8 @@
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-400/30 to-transparent"></div>
 
         <div class="text-center mb-8">
-          <h2 class="text-xl font-light tracking-[0.2em] text-gray-600 uppercase mb-2">P-PAC</h2>
+          <!-- จุดซ่อนความลับที่ 1: กดคำว่า P-PAC 5 ครั้ง -->
+          <h2 id="secretTriggerLogin" class="text-xl font-light tracking-[0.2em] text-gray-600 uppercase mb-2 cursor-default select-none">P-PAC</h2>
           <h3 class="text-sm tracking-wider text-gray-400 uppercase">Workspace Access</h3>
         </div>
 
@@ -50,18 +51,15 @@
             <span id="btnText">SIGN IN</span>
           </button>
         </form>
-
-        <div class="mt-8 text-center">
-          <p class="text-xs text-gray-400">
-            Demo Login: User <span class="font-semibold text-gray-600">admin</span> / Pass <span class="font-semibold text-gray-600">1234</span>
-          </p>
-        </div>
     </div>
   </div>
 
   <!-- ================= หน้าจอ Dashboard (Iframe จะถูกซ่อนไว้ตอนแรก) ================= -->
   <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#fdfdfd]">
     
+    <!-- จุดซ่อนความลับที่ 2: ปุ่มล่องหนมุมซ้ายล่างสุดของจอ กด 5 ครั้ง -->
+    <div id="secretTriggerDash" class="fixed bottom-0 left-0 w-16 h-16 z-[1000000] cursor-default bg-transparent"></div>
+
     <!-- กลุ่มเมนูมุมขวาบน แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
     <div style="z-index: 1000000;" class="fixed top-4 right-4 flex items-center gap-3">
       
@@ -87,12 +85,61 @@
     </iframe>
   </div>
 
+  <!-- ================= หน้าต่างลับสำหรับจัดการ User (Secret Admin Modal) ================= -->
+  <div id="adminModal" class="hidden fixed inset-0 z-[1000005] bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white shadow-2xl rounded-3xl p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+          <i data-lucide="shield" class="w-5 h-5 text-indigo-500"></i>
+          Secret User Management
+        </h2>
+        <button id="closeAdminBtn" class="text-gray-400 hover:text-gray-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- ฟอร์มเพิ่ม User ใหม่ -->
+      <div class="flex gap-2 mb-6">
+        <input type="text" id="newAdminUser" placeholder="New Username" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
+        <input type="text" id="newAdminPass" placeholder="Password" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
+        <button id="addAdminUserBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg transition-colors">
+          <i data-lucide="plus" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- รายชื่อ User -->
+      <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-60 overflow-y-auto">
+        <ul id="userListContainer" class="space-y-2">
+          <!-- จะใช้ Javascript สร้างรายชื่อตรงนี้ -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= ส่วนของ Javascript ================= -->
   <script>
-    // สั่งให้วาดไอคอน Lucide ขึ้นมาบนหน้าจอ
     lucide.createIcons();
 
-    // ประกาศตัวแปรอ้างอิงถึง UI ต่างๆ
+    // 1. ระบบจัดการฐานข้อมูลจำลอง (Local Storage)
+    const DB_KEY = 'ppac_secret_users';
+    
+    // โหลดข้อมูล User ถ้าไม่มีให้ใช้ admin/1234 เป็นค่าเริ่มต้น
+    function loadUsers() {
+      const stored = localStorage.getItem(DB_KEY);
+      if (stored) return JSON.parse(stored);
+      // ค่าเริ่มต้น (ห้ามลบ)
+      const defaultUsers = [{ username: 'admin', password: '1234' }];
+      localStorage.setItem(DB_KEY, JSON.stringify(defaultUsers));
+      return defaultUsers;
+    }
+
+    function saveUsers(usersArray) {
+      localStorage.setItem(DB_KEY, JSON.stringify(usersArray));
+    }
+
+    let usersDB = loadUsers();
+
+    // 2. อ้างอิง UI
     const loginForm = document.getElementById('loginForm');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
@@ -103,61 +150,154 @@
     const dashboardView = document.getElementById('dashboardView');
     const logoutBtn = document.getElementById('logoutBtn');
 
-    // จัดการเมื่อกดปุ่ม Login
+    // 3. จัดการการ Login โดยเช็คจาก usersDB
     loginForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // ป้องกันหน้าเว็บ Refresh
+        e.preventDefault();
+        const user = usernameInput.value.trim();
+        const pass = passwordInput.value.trim();
         
-        const user = usernameInput.value;
-        const pass = passwordInput.value;
-        
-        // ซ่อนข้อความ Error ก่อน
-        errorMsg.classList.remove('flex');
         errorMsg.classList.add('hidden');
+        errorMsg.classList.remove('flex');
         
-        // เปลี่ยนสถานะปุ่มเป็นโหมด Loading
         submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>';
         submitBtn.disabled = true;
 
-        // จำลองเวลาโหลดติดต่อ Backend 1 วินาที
         setTimeout(() => {
-            if (user === 'admin' && pass === '1234') {
-                // หาก Login สำเร็จ
-                // 1. ซ่อนหน้า Login
+            // เช็คว่ามี Username และ Password นี้ในฐานข้อมูลหรือไม่
+            const isValidUser = usersDB.some(u => u.username === user && u.password === pass);
+
+            if (isValidUser) {
                 loginView.classList.add('hidden');
                 loginView.classList.remove('flex');
-                
-                // 2. แสดงหน้า Dashboard (Iframe)
                 dashboardView.classList.remove('hidden');
                 dashboardView.classList.add('block');
             } else {
-                // หาก Login ไม่สำเร็จ แสดงข้อความ Error
                 errorText.innerText = 'Username หรือ Password ไม่ถูกต้อง';
                 errorMsg.classList.remove('hidden');
                 errorMsg.classList.add('flex');
             }
             
-            // คืนค่าปุ่มให้กลับมาเป็นแบบเดิม
             submitBtn.innerHTML = '<i data-lucide="log-in" class="w-4 h-4"></i><span>SIGN IN</span>';
-            lucide.createIcons(); // สั่งวาดไอคอนใหม่
+            lucide.createIcons();
             submitBtn.disabled = false;
-            
-        }, 1000);
+        }, 800);
     });
 
-    // จัดการเมื่อกดปุ่ม Logout
     logoutBtn.addEventListener('click', function() {
-        // ล้างค่าในช่องกรอก
         usernameInput.value = '';
         passwordInput.value = '';
-        
-        // ซ่อนหน้า Dashboard (Iframe)
         dashboardView.classList.remove('block');
         dashboardView.classList.add('hidden');
-        
-        // แสดงหน้า Login กลับมา
         loginView.classList.remove('hidden');
         loginView.classList.add('flex');
     });
+
+    // ========================================================
+    // 4. ระบบลับ (Secret Easter Egg)
+    // ========================================================
+    let clickCount = 0;
+    let clickTimer;
+
+    function handleSecretClick() {
+      clickCount++;
+      clearTimeout(clickTimer);
+      
+      // ถ้ารัวครบ 5 ครั้ง ให้เปิดหน้าต่างลับ
+      if (clickCount >= 5) {
+        openAdminModal();
+        clickCount = 0;
+      } else {
+        // ถ้ารีรอเกิน 1 วินาที ให้เริ่มนับใหม่
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+      }
+    }
+
+    // ผูก Event ให้จุดซ่อนความลับ
+    document.getElementById('secretTriggerLogin').addEventListener('click', handleSecretClick);
+    document.getElementById('secretTriggerDash').addEventListener('click', handleSecretClick);
+
+    // ========================================================
+    // 5. จัดการ UI ของหน้าต่างลับ (Admin Modal)
+    // ========================================================
+    const adminModal = document.getElementById('adminModal');
+    const closeAdminBtn = document.getElementById('closeAdminBtn');
+    const userListContainer = document.getElementById('userListContainer');
+    const addAdminUserBtn = document.getElementById('addAdminUserBtn');
+    const newAdminUser = document.getElementById('newAdminUser');
+    const newAdminPass = document.getElementById('newAdminPass');
+
+    function openAdminModal() {
+      renderUserList();
+      adminModal.classList.remove('hidden');
+      adminModal.classList.add('flex');
+    }
+
+    closeAdminBtn.addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+      adminModal.classList.remove('flex');
+    });
+
+    // วาดรายชื่อ User ลงในตาราง
+    function renderUserList() {
+      userListContainer.innerHTML = '';
+      usersDB.forEach((u, index) => {
+        const li = document.createElement('li');
+        li.className = "flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm";
+        
+        // ถ้าเป็น admin ไม่ให้ลบ
+        const isSuperAdmin = u.username === 'admin';
+        
+        li.innerHTML = `
+          <div>
+            <span class="font-medium text-gray-700 text-sm">${u.username}</span>
+            <span class="text-xs text-gray-400 ml-2">Pass: ${u.password}</span>
+          </div>
+          ${isSuperAdmin ? 
+            `<span class="text-xs text-indigo-400 bg-indigo-50 px-2 py-1 rounded">Super Admin</span>` : 
+            `<button onclick="deleteUser(${index})" class="text-red-400 hover:text-red-600 p-1 rounded-md hover:bg-red-50 transition-colors">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>`
+          }
+        `;
+        userListContainer.appendChild(li);
+      });
+      lucide.createIcons();
+    }
+
+    // ฟังก์ชันเพิ่ม User
+    addAdminUserBtn.addEventListener('click', () => {
+      const uName = newAdminUser.value.trim();
+      const uPass = newAdminPass.value.trim();
+      
+      if (!uName || !uPass) {
+        alert("กรุณากรอก Username และ Password ให้ครบถ้วน");
+        return;
+      }
+      
+      // เช็คว่าชื่อซ้ำไหม
+      if (usersDB.some(u => u.username === uName)) {
+        alert("Username นี้มีอยู่ในระบบแล้ว!");
+        return;
+      }
+
+      usersDB.push({ username: uName, password: uPass });
+      saveUsers(usersDB);
+      renderUserList();
+      
+      // เคลียร์ช่องกรอก
+      newAdminUser.value = '';
+      newAdminPass.value = '';
+    });
+
+    // ฟังก์ชันลบ User (ต้องใช้ window. เพื่อให้ปุ่มใน HTML มองเห็น)
+    window.deleteUser = function(index) {
+      if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ User: ${usersDB[index].username} ?`)) {
+        usersDB.splice(index, 1);
+        saveUsers(usersDB);
+        renderUserList();
+      }
+    };
+
   </script>
 </body>
 </html>
