@@ -1,29 +1,163 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>P-PACWORKSPACE</title>
-<base target="_top">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-</head>
+import React, { useState, useEffect } from 'react';
+import { LogIn, LogOut, Activity, User, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 
-<div align="center">
-<iframe src="https://script.google.com/macros/s/AKfycby_PIFyhk7fIqLSGLaT6N05oAgTwdFD-5WM4ruvutVnXlAfBjJdAWOcQTmAuhQ1Wm5Clg/exec" 
+export default function App() {
+  // สร้าง State เพื่อจัดการข้อมูลต่างๆ
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // จำลองฐานข้อมูล (Database) สำหรับเก็บ Log
+  const [logs, setLogs] = useState([
+    { id: 1, time: new Date(Date.now() - 86400000).toLocaleString(), user: 'admin', status: 'Login Success' },
+    { id: 2, time: new Date(Date.now() - 3600000).toLocaleString(), user: 'guest', status: 'Login Failed' }
+  ]);
 
-style="
-    position: fixed;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 100%;
-    border: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    z-index: 999999;
-    height: 100%;
-  "></iframe>
+  // ฟังก์ชันจำลองการ Login
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-<div>
-</body>
-</html>
+    // จำลองเวลาโหลดติดต่อ Backend (1 วินาที)
+    setTimeout(() => {
+      let isSuccess = false;
+      // จำลองการเช็ค Username/Password (ในระบบจริงตรงนี้จะใช้ Firebase Auth)
+      if (username === 'admin' && password === '1234') {
+        isSuccess = true;
+        setIsLoggedIn(true);
+      } else {
+        setError('Username หรือ Password ไม่ถูกต้อง');
+      }
+
+      // บันทึก Log การเข้าใช้งาน
+      const newLog = {
+        id: Date.now(),
+        time: new Date().toLocaleString('th-TH'),
+        user: username || 'Unknown',
+        status: isSuccess ? 'Login Success' : 'Login Failed'
+      };
+      
+      setLogs([newLog, ...logs]); // นำ Log ใหม่ไปต่อหน้า Log เก่า
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUsername('');
+    setPassword('');
+  };
+
+  // หน้าจอหลักหลังจาก Login สำเร็จ
+  if (isLoggedIn) {
+    return (
+      <div className="w-full h-screen relative overflow-hidden bg-[#fdfdfd]">
+        
+        {/* ปุ่ม Logout แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe */}
+        <button 
+          onClick={handleLogout}
+          style={{ zIndex: 1000000 }} /* ตั้งค่า z-index ให้สูงกว่า iframe */
+          className="fixed top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-red-500 shadow-lg"
+        >
+          <LogOut size={18} />
+          <span className="font-medium text-sm hidden sm:inline">Sign Out</span>
+        </button>
+
+        {/* นำ Iframe หน้า GAS ของคุณมาฝังแบบเต็มหน้าจอ */}
+        <iframe 
+          src="https://script.google.com/macros/s/AKfycby_PIFyhk7fIqLSGLaT6N05oAgTwdFD-5WM4ruvutVnXlAfBjJdAWOcQTmAuhQ1Wm5Clg/exec" 
+          style={{
+            position: 'fixed',
+            top: '0px',
+            bottom: '0px',
+            right: '0px',
+            width: '100%',
+            border: 'none',
+            margin: '0',
+            padding: '0',
+            overflow: 'hidden',
+            zIndex: 999999,
+            height: '100%'
+          }}
+          title="P-PAC WORKSPACE"
+        ></iframe>
+
+      </div>
+    );
+  }
+
+  // หน้าจอ Login (Luxury Frosted Glass)
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#fdfdfd] to-[#e2e2e2] flex items-center justify-center p-4 font-sans text-gray-700">
+      <div className="w-full max-w-sm bg-white/45 backdrop-blur-xl border border-white/90 shadow-[0_10px_40px_0_rgba(0,0,0,0.08)] rounded-3xl p-8 relative overflow-hidden">
+        
+        {/* Decorative elements for metallic feel */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-400/30 to-transparent"></div>
+        
+        <div className="text-center mb-8">
+          <h2 className="text-xl font-light tracking-[0.2em] text-gray-600 uppercase mb-2">P-PAC</h2>
+          <h3 className="text-sm tracking-wider text-gray-400 uppercase">Workspace Access</h3>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <User size={18} className="text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]"
+            />
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock size={18} className="text-gray-400" />
+            </div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]"
+            />
+          </div>
+
+          {error && (
+            <div className="flex items-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 p-2 rounded-lg border border-red-100">
+              <AlertCircle size={14} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full mt-6 bg-gradient-to-br from-white to-[#e6e6e6] hover:from-[#f4f4f4] hover:to-[#d4d4d4] border border-white text-gray-600 font-semibold tracking-wide py-3.5 rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+          >
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <>
+                <LogIn size={18} />
+                <span>SIGN IN</span>
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-xs text-gray-400">
+            Demo Login: User <span className="font-semibold text-gray-600">admin</span> / Pass <span className="font-semibold text-gray-600">1234</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
