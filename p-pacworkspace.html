@@ -91,7 +91,7 @@
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
           <i data-lucide="shield" class="w-5 h-5 text-indigo-500"></i>
-          Secret User Management
+          Secret Panel
         </h2>
         <button id="closeAdminBtn" class="text-gray-400 hover:text-gray-700">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -99,7 +99,7 @@
       </div>
 
       <!-- ฟอร์มเพิ่ม User ใหม่ -->
-      <div class="flex gap-2 mb-6">
+      <div class="flex gap-2 mb-4">
         <input type="text" id="newAdminUser" placeholder="New Username" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
         <input type="text" id="newAdminPass" placeholder="Password" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
         <button id="addAdminUserBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg transition-colors">
@@ -108,11 +108,22 @@
       </div>
 
       <!-- รายชื่อ User -->
-      <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-60 overflow-y-auto">
+      <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-40 overflow-y-auto mb-4">
         <ul id="userListContainer" class="space-y-2">
           <!-- จะใช้ Javascript สร้างรายชื่อตรงนี้ -->
         </ul>
       </div>
+
+      <!-- ส่วนแสดงประวัติการ Login (Logs) -->
+      <h3 class="text-sm font-bold text-gray-700 mb-2 flex items-center gap-2 border-t border-gray-200 pt-4">
+        <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Login Activity
+      </h3>
+      <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-40 overflow-y-auto">
+        <ul id="logListContainer" class="space-y-2">
+          <!-- ประวัติ Login จะมาแสดงที่นี่ -->
+        </ul>
+      </div>
+
     </div>
   </div>
 
@@ -122,12 +133,12 @@
 
     // 1. ระบบจัดการฐานข้อมูลจำลอง (Local Storage)
     const DB_KEY = 'ppac_secret_users';
+    const LOGS_KEY = 'ppac_login_logs'; // Key สำหรับเก็บประวัติการ Login
     
     // โหลดข้อมูล User ถ้าไม่มีให้ใช้ admin/1234 เป็นค่าเริ่มต้น
     function loadUsers() {
       const stored = localStorage.getItem(DB_KEY);
       if (stored) return JSON.parse(stored);
-      // ค่าเริ่มต้น (ห้ามลบ)
       const defaultUsers = [{ username: 'admin', password: '1234' }];
       localStorage.setItem(DB_KEY, JSON.stringify(defaultUsers));
       return defaultUsers;
@@ -139,7 +150,20 @@
 
     let usersDB = loadUsers();
 
-    // 2. อ้างอิง UI
+    // 2. ระบบเก็บประวัติ (Logs)
+    function getLogs() {
+      return JSON.parse(localStorage.getItem(LOGS_KEY) || '[]');
+    }
+
+    function addLog(username, status) {
+      const logs = getLogs();
+      const time = new Date().toLocaleString('th-TH');
+      logs.unshift({ username: username || 'Unknown', status, time }); // เอา Log ใหม่แทรกไว้บนสุด
+      if (logs.length > 50) logs.pop(); // เก็บประวัติย้อนหลังแค่ 50 รายการล่าสุด
+      localStorage.setItem(LOGS_KEY, JSON.stringify(logs));
+    }
+
+    // 3. อ้างอิง UI
     const loginForm = document.getElementById('loginForm');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
@@ -150,7 +174,22 @@
     const dashboardView = document.getElementById('dashboardView');
     const logoutBtn = document.getElementById('logoutBtn');
 
-    // 3. จัดการการ Login โดยเช็คจาก usersDB
+    // ========================================================
+    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ (จำค่าการ Login)
+    // ========================================================
+    function checkActiveSession() {
+      const activeUser = sessionStorage.getItem('ppac_active_user');
+      if (activeUser) {
+        // ถ้าเคย Login ไว้แล้ว ข้ามไปหน้า Dashboard เลย
+        loginView.classList.add('hidden');
+        loginView.classList.remove('flex');
+        dashboardView.classList.remove('hidden');
+        dashboardView.classList.add('block');
+      }
+    }
+    checkActiveSession(); // เรียกใช้ทันทีเมื่อเปิดเว็บ
+
+    // 4. จัดการการ Login
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const user = usernameInput.value.trim();
@@ -163,15 +202,23 @@
         submitBtn.disabled = true;
 
         setTimeout(() => {
-            // เช็คว่ามี Username และ Password นี้ในฐานข้อมูลหรือไม่
             const isValidUser = usersDB.some(u => u.username === user && u.password === pass);
 
             if (isValidUser) {
+                // บันทึก Log ว่าเข้าสำเร็จ
+                addLog(user, 'Success');
+                
+                // ★ จำค่าใน Session ทันที (เพื่อให้กลับมาแล้วไม่ต้อง Login ใหม่)
+                sessionStorage.setItem('ppac_active_user', user);
+
                 loginView.classList.add('hidden');
                 loginView.classList.remove('flex');
                 dashboardView.classList.remove('hidden');
                 dashboardView.classList.add('block');
             } else {
+                // บันทึก Log ว่ารหัสผิด
+                addLog(user, 'Failed');
+
                 errorText.innerText = 'Username หรือ Password ไม่ถูกต้อง';
                 errorMsg.classList.remove('hidden');
                 errorMsg.classList.add('flex');
@@ -184,6 +231,9 @@
     });
 
     logoutBtn.addEventListener('click', function() {
+        // ★ ลบการจำค่า Session เมื่อกด Sign Out
+        sessionStorage.removeItem('ppac_active_user');
+
         usernameInput.value = '';
         passwordInput.value = '';
         dashboardView.classList.remove('block');
@@ -193,7 +243,7 @@
     });
 
     // ========================================================
-    // 4. ระบบลับ (Secret Easter Egg)
+    // 5. ระบบลับ (Secret Easter Egg) & Logs Display
     // ========================================================
     let clickCount = 0;
     let clickTimer;
@@ -201,33 +251,28 @@
     function handleSecretClick() {
       clickCount++;
       clearTimeout(clickTimer);
-      
-      // ถ้ารัวครบ 5 ครั้ง ให้เปิดหน้าต่างลับ
       if (clickCount >= 5) {
         openAdminModal();
         clickCount = 0;
       } else {
-        // ถ้ารีรอเกิน 1 วินาที ให้เริ่มนับใหม่
         clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
       }
     }
 
-    // ผูก Event ให้จุดซ่อนความลับ
     document.getElementById('secretTriggerLogin').addEventListener('click', handleSecretClick);
     document.getElementById('secretTriggerDash').addEventListener('click', handleSecretClick);
 
-    // ========================================================
-    // 5. จัดการ UI ของหน้าต่างลับ (Admin Modal)
-    // ========================================================
     const adminModal = document.getElementById('adminModal');
     const closeAdminBtn = document.getElementById('closeAdminBtn');
     const userListContainer = document.getElementById('userListContainer');
+    const logListContainer = document.getElementById('logListContainer');
     const addAdminUserBtn = document.getElementById('addAdminUserBtn');
     const newAdminUser = document.getElementById('newAdminUser');
     const newAdminPass = document.getElementById('newAdminPass');
 
     function openAdminModal() {
       renderUserList();
+      renderLogList(); // วาด Logs ด้วย
       adminModal.classList.remove('hidden');
       adminModal.classList.add('flex');
     }
@@ -242,18 +287,15 @@
       userListContainer.innerHTML = '';
       usersDB.forEach((u, index) => {
         const li = document.createElement('li');
-        li.className = "flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm";
-        
-        // ถ้าเป็น admin ไม่ให้ลบ
+        li.className = "flex justify-between items-center p-2 bg-white rounded-lg border border-gray-100 shadow-sm";
         const isSuperAdmin = u.username === 'admin';
-        
         li.innerHTML = `
           <div>
             <span class="font-medium text-gray-700 text-sm">${u.username}</span>
             <span class="text-xs text-gray-400 ml-2">Pass: ${u.password}</span>
           </div>
           ${isSuperAdmin ? 
-            `<span class="text-xs text-indigo-400 bg-indigo-50 px-2 py-1 rounded">Super Admin</span>` : 
+            `<span class="text-[10px] font-bold text-indigo-400 bg-indigo-50 px-2 py-1 rounded uppercase tracking-wider">Master</span>` : 
             `<button onclick="deleteUser(${index})" class="text-red-400 hover:text-red-600 p-1 rounded-md hover:bg-red-50 transition-colors">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>`
@@ -264,34 +306,50 @@
       lucide.createIcons();
     }
 
-    // ฟังก์ชันเพิ่ม User
+    // วาดประวัติการ Login (Logs)
+    function renderLogList() {
+      logListContainer.innerHTML = '';
+      const logs = getLogs();
+      
+      if (logs.length === 0) {
+        logListContainer.innerHTML = '<li class="text-xs text-gray-400 text-center p-2">ไม่มีประวัติการใช้งาน</li>';
+        return;
+      }
+
+      logs.forEach((log) => {
+        const li = document.createElement('li');
+        li.className = "flex justify-between items-center p-2 bg-white rounded-lg border border-gray-100 shadow-sm";
+        const isSuccess = log.status === 'Success';
+        li.innerHTML = `
+          <div class="flex flex-col">
+            <span class="font-medium text-gray-700 text-sm">${log.username}</span>
+            <span class="text-[10px] text-gray-400">${log.time}</span>
+          </div>
+          <span class="text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider ${isSuccess ? 'bg-emerald-50 text-emerald-500' : 'bg-red-50 text-red-500'}">
+            ${log.status}
+          </span>
+        `;
+        logListContainer.appendChild(li);
+      });
+    }
+
     addAdminUserBtn.addEventListener('click', () => {
       const uName = newAdminUser.value.trim();
       const uPass = newAdminPass.value.trim();
       
-      if (!uName || !uPass) {
-        alert("กรุณากรอก Username และ Password ให้ครบถ้วน");
-        return;
-      }
-      
-      // เช็คว่าชื่อซ้ำไหม
-      if (usersDB.some(u => u.username === uName)) {
-        alert("Username นี้มีอยู่ในระบบแล้ว!");
-        return;
-      }
+      if (!uName || !uPass) return alert("กรุณากรอก Username และ Password ให้ครบถ้วน");
+      if (usersDB.some(u => u.username === uName)) return alert("Username นี้มีอยู่ในระบบแล้ว!");
 
       usersDB.push({ username: uName, password: uPass });
       saveUsers(usersDB);
       renderUserList();
       
-      // เคลียร์ช่องกรอก
       newAdminUser.value = '';
       newAdminPass.value = '';
     });
 
-    // ฟังก์ชันลบ User (ต้องใช้ window. เพื่อให้ปุ่มใน HTML มองเห็น)
     window.deleteUser = function(index) {
-      if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ User: ${usersDB[index].username} ?`)) {
+      if (confirm(`ลบ User: ${usersDB[index].username} ?`)) {
         usersDB.splice(index, 1);
         saveUsers(usersDB);
         renderUserList();
