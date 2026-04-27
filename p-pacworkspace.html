@@ -63,6 +63,12 @@
     <!-- กลุ่มเมนูมุมขวาบน แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
     <div style="z-index: 1000000;" class="fixed top-4 right-4 flex items-center gap-3">
       
+      <!-- แสดงชื่อผู้ใช้ (Greeting) -->
+      <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg cursor-default">
+        <i data-lucide="smile" class="w-4 h-4 text-indigo-500"></i>
+        <span class="font-medium text-sm text-gray-700">Hello! <span id="displayUsername" class="font-bold text-indigo-600"></span></span>
+      </div>
+
       <!-- ปุ่ม Report Page -->
       <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
         <i data-lucide="file-text" class="w-4 h-4"></i>
@@ -132,7 +138,7 @@
     lucide.createIcons();
 
     // ★★★ นำ URL ของ Google Apps Script ที่ได้จากการ Deploy มาใส่ในเครื่องหมายคำพูดด้านล่างนี้ ★★★
-    const API_URL = 'https://script.google.com/macros/s/AKfycbw8OW_R9CQx-tdyRyPlu6KKdfDHRhUL1iDHnwV6-h1JcIAaN9h5lMdDWUZDuP2GajjHOw/exec';
+    const API_URL = 'ใส่_URL_ของ_GAS_ที่ได้จากการ_Deploy_ที่นี่';
 
     // ฟังก์ชันหลักสำหรับสื่อสารกับ Google Sheets
     async function callAPI(action, payload = {}) {
@@ -166,6 +172,7 @@
     function checkActiveSession() {
       const activeUser = sessionStorage.getItem('ppac_active_user');
       if (activeUser) {
+        document.getElementById('displayUsername').innerText = activeUser;
         loginView.classList.add('hidden');
         loginView.classList.remove('flex');
         dashboardView.classList.remove('hidden');
@@ -195,6 +202,7 @@
 
         if (result.success) {
             sessionStorage.setItem('ppac_active_user', user);
+            document.getElementById('displayUsername').innerText = user;
             loginView.classList.add('hidden');
             loginView.classList.remove('flex');
             dashboardView.classList.remove('hidden');
