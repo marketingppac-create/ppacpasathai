@@ -62,11 +62,22 @@
   <!-- ================= หน้าจอ Dashboard (Iframe จะถูกซ่อนไว้ตอนแรก) ================= -->
   <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#fdfdfd]">
     
-    <!-- ปุ่ม Logout แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
-    <button id="logoutBtn" style="z-index: 1000000;" class="fixed top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-red-500 shadow-lg cursor-pointer">
-      <i data-lucide="log-out" class="w-4 h-4"></i>
-      <span class="font-medium text-sm hidden sm:inline">Sign Out</span>
-    </button>
+    <!-- กลุ่มเมนูมุมขวาบน แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
+    <div style="z-index: 1000000;" class="fixed top-4 right-4 flex items-center gap-3">
+      
+      <!-- ปุ่ม Report Page -->
+      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
+        <i data-lucide="file-text" class="w-4 h-4"></i>
+        <span class="font-medium text-sm hidden sm:inline">Report Page</span>
+      </a>
+
+      <!-- ปุ่ม Logout -->
+      <button id="logoutBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-red-500 shadow-lg cursor-pointer">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+        <span class="font-medium text-sm hidden sm:inline">Sign Out</span>
+      </button>
+
+    </div>
 
     <!-- นำ Iframe หน้า GAS ของคุณมาฝังแบบเต็มหน้าจอ -->
     <iframe 
