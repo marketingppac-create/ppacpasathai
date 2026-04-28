@@ -167,10 +167,11 @@
     const logoutBtn = document.getElementById('logoutBtn');
 
     // ========================================================
-    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ
+    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ (แก้เป็น localStorage)
     // ========================================================
     function checkActiveSession() {
-      const activeUser = sessionStorage.getItem('ppac_active_user');
+      // เปลี่ยนจาก sessionStorage เป็น localStorage
+      const activeUser = localStorage.getItem('ppac_active_user');
       if (activeUser) {
         document.getElementById('displayUsername').innerText = activeUser;
         loginView.classList.add('hidden');
@@ -201,7 +202,8 @@
         const result = await callAPI('login', { user: user, pass: pass });
 
         if (result.success) {
-            sessionStorage.setItem('ppac_active_user', user);
+            // เปลี่ยนจาก sessionStorage เป็น localStorage
+            localStorage.setItem('ppac_active_user', user);
             document.getElementById('displayUsername').innerText = user;
             loginView.classList.add('hidden');
             loginView.classList.remove('flex');
@@ -219,7 +221,8 @@
     });
 
     logoutBtn.addEventListener('click', function() {
-        sessionStorage.removeItem('ppac_active_user');
+        // เปลี่ยนจาก sessionStorage เป็น localStorage
+        localStorage.removeItem('ppac_active_user');
         usernameInput.value = '';
         passwordInput.value = '';
         dashboardView.classList.remove('block');
