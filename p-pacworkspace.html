@@ -70,7 +70,7 @@
       </div>
 
       <!-- ปุ่ม Report Page -->
-      <a href="ใส่_URL_ของหน้า_ถัดจากคลิกสร้าง_ที่นี่" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
+      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
         <i data-lucide="file-text" class="w-4 h-4"></i>
         <span class="font-medium text-sm hidden sm:inline">Report Page</span>
       </a>
@@ -138,7 +138,7 @@
     lucide.createIcons();
 
     // ★★★ API URL เชื่อมต่อกับ Google Sheets Backend (ให้ AI ช่วยจำไว้ให้แล้ว) ★★★
-    const API_URL = 'https://script.google.com/macros/s/AKfycbw8OW_R9CQx-tdyRyPlu6KKdfDHRhUL1iDHnwV6-h1JcIAaN9h5lMdDWUZDuP2GajjHOw/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
 
     // ฟังก์ชันหลักสำหรับสื่อสารกับ Google Sheets
     async function callAPI(action, payload = {}) {
@@ -167,10 +167,11 @@
     const logoutBtn = document.getElementById('logoutBtn');
 
     // ========================================================
-    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ
+    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ (แก้เป็น localStorage)
     // ========================================================
     function checkActiveSession() {
-      const activeUser = sessionStorage.getItem('ppac_active_user');
+      // เปลี่ยนจาก sessionStorage เป็น localStorage
+      const activeUser = localStorage.getItem('ppac_active_user');
       if (activeUser) {
         document.getElementById('displayUsername').innerText = activeUser;
         loginView.classList.add('hidden');
@@ -201,14 +202,20 @@
         const result = await callAPI('login', { user: user, pass: pass });
 
         if (result.success) {
-            sessionStorage.setItem('ppac_active_user', user);
+            // เปลี่ยนจาก sessionStorage เป็น localStorage
+            localStorage.setItem('ppac_active_user', user);
             document.getElementById('displayUsername').innerText = user;
             loginView.classList.add('hidden');
             loginView.classList.remove('flex');
             dashboardView.classList.remove('hidden');
             dashboardView.classList.add('block');
         } else {
-            errorText.innerText = 'Username หรือ Password ไม่ถูกต้อง';
+            // ★ ปรับปรุงระบบแจ้งเตือน Error ให้ชัดเจนขึ้น
+            if (result.error === "Network Error" || result.error) {
+                errorText.innerText = 'เชื่อมต่อฐานข้อมูลไม่ได้ (เช็คการ Deploy แบบ New Deployment)';
+            } else {
+                errorText.innerText = 'Username หรือ Password ไม่ถูกต้อง';
+            }
             errorMsg.classList.remove('hidden');
             errorMsg.classList.add('flex');
         }
@@ -219,7 +226,8 @@
     });
 
     logoutBtn.addEventListener('click', function() {
-        sessionStorage.removeItem('ppac_active_user');
+        // เปลี่ยนจาก sessionStorage เป็น localStorage
+        localStorage.removeItem('ppac_active_user');
         usernameInput.value = '';
         passwordInput.value = '';
         dashboardView.classList.remove('block');
