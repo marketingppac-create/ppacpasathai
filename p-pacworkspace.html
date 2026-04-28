@@ -5,22 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>P-PAC WORKSPACE</title>
   
-  <!-- โหลด Tailwind CSS ผ่าน CDN เพื่องานดีไซน์ -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- โหลด Lucide Icons ผ่าน CDN สำหรับไอคอนต่างๆ -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-gradient-to-br from-[#fdfdfd] to-[#e2e2e2] font-sans text-gray-700 m-0 p-0">
 
-  <!-- ================= หน้าจอ Login ================= -->
   <div id="loginView" class="min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-sm bg-white/45 backdrop-blur-xl border border-white/90 shadow-[0_10px_40px_0_rgba(0,0,0,0.08)] rounded-3xl p-8 relative overflow-hidden">
         
-        <!-- Decorative bg สำหรับความเงางาม Metallic -->
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-400/30 to-transparent"></div>
 
         <div class="text-center mb-8">
-          <!-- จุดซ่อนความลับที่ 1: กดคำว่า P-PAC 5 ครั้ง -->
           <h2 id="secretTriggerLogin" class="text-xl font-light tracking-[0.2em] text-gray-600 uppercase mb-2 cursor-default select-none">P-PAC</h2>
           <h3 class="text-sm tracking-wider text-gray-400 uppercase">Workspace Access</h3>
         </div>
@@ -40,7 +35,6 @@
             <input type="password" id="password" placeholder="Password" class="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
           </div>
 
-          <!-- กล่องข้อความ Error (ซ่อนไว้ก่อน) -->
           <div id="errorMsg" class="hidden items-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 p-2 rounded-lg border border-red-100">
             <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
             <span id="errorText"></span>
@@ -54,28 +48,22 @@
     </div>
   </div>
 
-  <!-- ================= หน้าจอ Dashboard (Iframe จะถูกซ่อนไว้ตอนแรก) ================= -->
   <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#fdfdfd]">
     
-    <!-- จุดซ่อนความลับที่ 2: ปุ่มล่องหนมุมซ้ายล่างสุดของจอ กด 5 ครั้ง -->
     <div id="secretTriggerDash" class="fixed bottom-0 left-0 w-16 h-16 z-[1000000] cursor-default bg-transparent"></div>
 
-    <!-- กลุ่มเมนูมุมขวาล่าง แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
     <div style="z-index: 1000000;" class="fixed bottom-4 right-4 flex flex-col items-end gap-3">
       
-      <!-- แสดงชื่อผู้ใช้ (Greeting) -->
       <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg cursor-default">
         <i data-lucide="smile" class="w-4 h-4 text-indigo-500"></i>
         <span class="font-medium text-sm text-gray-700">Hello! <span id="displayUsername" class="font-bold text-indigo-600"></span></span>
       </div>
 
-      <!-- ปุ่ม Report Page -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
-        <i data-lucide="file-text" class="w-4 h-4"></i>
-        <span class="font-medium text-sm hidden sm:inline">Report Page</span>
+      <a href="index.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
+        <i data-lucide="home" class="w-4 h-4"></i>
+        <span class="font-medium text-sm hidden sm:inline">Home Page</span>
       </a>
 
-      <!-- ปุ่ม Logout -->
       <button id="logoutBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-red-500 shadow-lg cursor-pointer">
         <i data-lucide="log-out" class="w-4 h-4"></i>
         <span class="font-medium text-sm hidden sm:inline">Sign Out</span>
@@ -83,7 +71,6 @@
 
     </div>
 
-    <!-- นำ Iframe หน้า GAS ของคุณมาฝังแบบเต็มหน้าจอ -->
     <iframe 
       src="https://script.google.com/macros/s/AKfycby_PIFyhk7fIqLSGLaT6N05oAgTwdFD-5WM4ruvutVnXlAfBjJdAWOcQTmAuhQ1Wm5Clg/exec" 
       style="position: fixed; top: 0; bottom: 0; right: 0; width: 100%; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999; height: 100%;"
@@ -91,7 +78,6 @@
     </iframe>
   </div>
 
-  <!-- ================= หน้าต่างลับสำหรับจัดการ User (Secret Admin Modal) ================= -->
   <div id="adminModal" class="hidden fixed inset-0 z-[1000005] bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
     <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white shadow-2xl rounded-3xl p-6">
       <div class="flex justify-between items-center mb-6">
@@ -104,7 +90,6 @@
         </button>
       </div>
 
-      <!-- ฟอร์มเพิ่ม User ใหม่ -->
       <div class="flex gap-2 mb-4">
         <input type="text" id="newAdminUser" placeholder="New Username" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
         <input type="text" id="newAdminPass" placeholder="Password" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
@@ -113,31 +98,26 @@
         </button>
       </div>
 
-      <!-- รายชื่อ User -->
       <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-40 overflow-y-auto mb-4">
         <ul id="userListContainer" class="space-y-2">
-          <!-- จะใช้ Javascript สร้างรายชื่อตรงนี้ -->
-        </ul>
+          </ul>
       </div>
 
-      <!-- ส่วนแสดงประวัติการ Login (Logs) -->
       <h3 class="text-sm font-bold text-gray-700 mb-2 flex items-center gap-2 border-t border-gray-200 pt-4">
         <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Login Activity
       </h3>
       <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-40 overflow-y-auto">
         <ul id="logListContainer" class="space-y-2">
-          <!-- ประวัติ Login จะมาแสดงที่นี่ -->
-        </ul>
+          </ul>
       </div>
 
     </div>
   </div>
 
-  <!-- ================= ส่วนของ Javascript ================= -->
   <script>
     lucide.createIcons();
 
-    // ★★★ API URL เชื่อมต่อกับ Google Sheets Backend (ให้ AI ช่วยจำไว้ให้แล้ว) ★★★
+    // ★★★ API URL เชื่อมต่อกับ Google Sheets Backend ★★★
     const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
 
     // ฟังก์ชันหลักสำหรับสื่อสารกับ Google Sheets
@@ -167,10 +147,9 @@
     const logoutBtn = document.getElementById('logoutBtn');
 
     // ========================================================
-    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ (แก้เป็น localStorage)
+    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บด้วย localStorage
     // ========================================================
     function checkActiveSession() {
-      // เปลี่ยนจาก sessionStorage เป็น localStorage
       const activeUser = localStorage.getItem('ppac_active_user');
       if (activeUser) {
         document.getElementById('displayUsername').innerText = activeUser;
@@ -198,11 +177,9 @@
         submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>';
         submitBtn.disabled = true;
 
-        // วิ่งไปเช็คกับ Google Sheets API
         const result = await callAPI('login', { user: user, pass: pass });
 
         if (result.success) {
-            // เปลี่ยนจาก sessionStorage เป็น localStorage
             localStorage.setItem('ppac_active_user', user);
             document.getElementById('displayUsername').innerText = user;
             loginView.classList.add('hidden');
@@ -210,7 +187,6 @@
             dashboardView.classList.remove('hidden');
             dashboardView.classList.add('block');
         } else {
-            // ★ ปรับปรุงระบบแจ้งเตือน Error ให้ชัดเจนขึ้น
             if (result.error === "Network Error" || result.error) {
                 errorText.innerText = 'เชื่อมต่อฐานข้อมูลไม่ได้ (เช็คการ Deploy แบบ New Deployment)';
             } else {
@@ -226,18 +202,13 @@
     });
 
     logoutBtn.addEventListener('click', function() {
-        // เปลี่ยนจาก sessionStorage เป็น localStorage
         localStorage.removeItem('ppac_active_user');
-        usernameInput.value = '';
-        passwordInput.value = '';
-        dashboardView.classList.remove('block');
-        dashboardView.classList.add('hidden');
-        loginView.classList.remove('hidden');
-        loginView.classList.add('flex');
+        // เมื่อกด Sign Out จากหน้านี้ ให้เด้งกลับไปหน้า Index ให้ Login ใหม่
+        window.location.href = 'index.html';
     });
 
     // ========================================================
-    // ★ ระบบลับ (Secret Admin Panel) - โหลดตรงจาก Google Sheets
+    // ★ ระบบลับ (Secret Admin Panel)
     // ========================================================
     let clickCount = 0;
     let clickTimer;
@@ -280,7 +251,6 @@
       adminModal.classList.remove('flex');
     });
 
-    // โหลดรายชื่อ User จาก Google Sheets
     async function renderUserList() {
       const response = await callAPI('getUsers');
       userListContainer.innerHTML = '';
@@ -306,7 +276,6 @@
       lucide.createIcons();
     }
 
-    // โหลดประวัติการ Login (Logs) จาก Google Sheets
     async function renderLogList() {
       const response = await callAPI('getLogs');
       logListContainer.innerHTML = '';
@@ -334,14 +303,12 @@
       }
     }
 
-    // เพิ่ม User ไปยัง Google Sheets
     addAdminUserBtn.addEventListener('click', async () => {
       const uName = newAdminUser.value.trim();
       const uPass = newAdminPass.value.trim();
       
       if (!uName || !uPass) return alert("กรุณากรอก Username และ Password ให้ครบถ้วน");
 
-      // โชว์ Loading บนปุ่ม
       addAdminUserBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
       
       const response = await callAPI('addUser', { user: uName, pass: uPass });
@@ -357,7 +324,6 @@
       lucide.createIcons();
     });
 
-    // ลบ User จาก Google Sheets
     window.deleteUser = async function(username) {
       if (confirm(`ลบ User: ${username} ถาวรหรือไม่ ?`)) {
         userListContainer.innerHTML = '<div class="text-center p-4 text-xs text-gray-500">Deleting...</div>';
@@ -367,7 +333,6 @@
         }
       }
     };
-
   </script>
 </body>
 </html>
