@@ -5,23 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>P-PAC WORKSPACE</title>
   
-  <!-- โหลด Tailwind CSS ผ่าน CDN เพื่องานดีไซน์ -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- โหลด Lucide Icons ผ่าน CDN สำหรับไอคอนต่างๆ -->
   <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body class="bg-gradient-to-br from-[#fdfdfd] to-[#e2e2e2] font-sans text-gray-700 m-0 p-0">
 
-  <!-- ================= หน้าจอ Login ================= -->
+  <style>
+    /* ปรับแต่ง Scrollbar ให้ดูหรูหรา */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #e2e2e2; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0085FD; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#fdfdfd] to-[#e2e2e2] font-sans text-gray-700 m-0 p-0 overflow-hidden">
+
   <div id="loginView" class="min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-sm bg-white/45 backdrop-blur-xl border border-white/90 shadow-[0_10px_40px_0_rgba(0,0,0,0.08)] rounded-3xl p-8 relative overflow-hidden">
         
-        <!-- Decorative bg สำหรับความเงางาม Metallic -->
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-400/30 to-transparent"></div>
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-[#0085FD]"></div>
 
         <div class="text-center mb-8">
-          <h2 class="text-xl font-light tracking-[0.2em] text-gray-600 uppercase mb-2">P-PAC</h2>
-          <h3 class="text-sm tracking-wider text-gray-400 uppercase">Workspace Access</h3>
+          <h2 id="secretTriggerLogin" class="text-2xl font-light tracking-[0.2em] text-[#0085FD] uppercase mb-2 cursor-default select-none transition-all hover:opacity-80">P-PAC</h2>
+          <h3 class="text-xs tracking-widest text-gray-400 uppercase">Potential Analysis Center</h3>
         </div>
 
         <form id="loginForm" class="space-y-4">
@@ -29,57 +33,50 @@
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <i data-lucide="user" class="text-gray-400 w-4 h-4"></i>
             </div>
-            <input type="text" id="username" placeholder="Username" class="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
+            <input type="text" id="username" placeholder="Username" class="w-full pl-10 pr-4 py-3.5 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white focus:border-[#0085FD] focus:ring-2 focus:ring-[#0085FD]/20 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
           </div>
           
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <i data-lucide="lock" class="text-gray-400 w-4 h-4"></i>
             </div>
-            <input type="password" id="password" placeholder="Password" class="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
+            <input type="password" id="password" placeholder="Password" class="w-full pl-10 pr-4 py-3.5 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white focus:border-[#0085FD] focus:ring-2 focus:ring-[#0085FD]/20 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
           </div>
 
-          <!-- กล่องข้อความ Error (ซ่อนไว้ก่อน) -->
-          <div id="errorMsg" class="hidden items-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 p-2 rounded-lg border border-red-100">
-            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+          <div id="errorMsg" class="hidden items-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 p-3 rounded-lg border border-red-100">
+            <i data-lucide="alert-circle" class="w-4 h-4"></i>
             <span id="errorText"></span>
           </div>
 
-          <button type="submit" id="submitBtn" class="w-full mt-6 bg-gradient-to-br from-white to-[#e6e6e6] hover:from-[#f4f4f4] hover:to-[#d4d4d4] border border-white text-gray-600 font-semibold tracking-wide py-3.5 rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 flex justify-center items-center gap-2">
-            <i data-lucide="log-in" class="w-4 h-4" id="btnIcon"></i>
-            <span id="btnText">SIGN IN</span>
+          <button type="submit" id="submitBtn" class="w-full mt-6 bg-gradient-to-br from-[#0085FD] to-[#0066cc] hover:from-[#0066cc] hover:to-[#0055aa] text-white font-semibold tracking-wide py-4 rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(0,133,253,0.3)] hover:shadow-[0_6px_20px_rgba(0,133,253,0.4)] hover:-translate-y-0.5 flex justify-center items-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span>SIGN IN</span>
           </button>
         </form>
-
-        <div class="mt-8 text-center">
-          <p class="text-xs text-gray-400">
-            Demo Login: User <span class="font-semibold text-gray-600">admin</span> / Pass <span class="font-semibold text-gray-600">1234</span>
-          </p>
-        </div>
     </div>
   </div>
 
-  <!-- ================= หน้าจอ Dashboard (Iframe จะถูกซ่อนไว้ตอนแรก) ================= -->
   <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#fdfdfd]">
     
-    <!-- กลุ่มเมนูมุมขวาบน แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
-    <div style="z-index: 1000000;" class="fixed top-4 right-4 flex items-center gap-3">
+    <div style="z-index: 1000000;" class="fixed bottom-6 right-6 flex flex-col items-end gap-3">
       
-      <!-- ปุ่ม Report Page -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
-        <i data-lucide="file-text" class="w-4 h-4"></i>
-        <span class="font-medium text-sm hidden sm:inline">Report Page</span>
+      <div class="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white/85 backdrop-blur-md border border-white/60 shadow-xl cursor-default group transition-all hover:bg-white">
+        <div class="w-2 h-2 rounded-full bg-[#FFCD00]"></div>
+        <span class="font-medium text-sm text-gray-700">Hello, <span id="displayUsername" class="font-bold text-[#0085FD]"></span></span>
+      </div>
+
+      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/75 backdrop-blur-md hover:bg-[#0085FD] border border-white/60 transition-all text-gray-700 hover:text-white shadow-xl cursor-pointer no-underline group">
+        <i data-lucide="file-text" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
+        <span class="font-bold text-sm">Report Page</span>
       </a>
 
-      <!-- ปุ่ม Logout -->
-      <button id="logoutBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-red-500 shadow-lg cursor-pointer">
-        <i data-lucide="log-out" class="w-4 h-4"></i>
-        <span class="font-medium text-sm hidden sm:inline">Sign Out</span>
+      <button id="logoutBtn" class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/75 backdrop-blur-md hover:bg-red-500 border border-white/60 transition-all text-gray-700 hover:text-white shadow-xl cursor-pointer group">
+        <i data-lucide="log-out" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+        <span class="font-bold text-sm">Sign Out</span>
       </button>
 
     </div>
 
-    <!-- นำ Iframe หน้า GAS ของคุณมาฝังแบบเต็มหน้าจอ -->
     <iframe 
       src="https://script.google.com/macros/s/AKfycby_PIFyhk7fIqLSGLaT6N05oAgTwdFD-5WM4ruvutVnXlAfBjJdAWOcQTmAuhQ1Wm5Clg/exec" 
       style="position: fixed; top: 0; bottom: 0; right: 0; width: 100%; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999; height: 100%;"
@@ -87,76 +84,165 @@
     </iframe>
   </div>
 
-  <!-- ================= ส่วนของ Javascript ================= -->
+  <div id="adminModal" class="hidden fixed inset-0 z-[1000005] bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-white/90 backdrop-blur-2xl border border-white shadow-2xl rounded-[2rem] p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+          <i data-lucide="shield-check" class="w-6 h-6 text-[#0085FD]"></i>
+          Admin Panel
+        </h2>
+        <button id="closeAdminBtn" class="p-2 hover:bg-gray-100 rounded-full transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+
+      <div class="flex gap-3 mb-6">
+        <input type="text" id="newAdminUser" placeholder="New User" class="w-1/2 px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0085FD]">
+        <input type="text" id="newAdminPass" placeholder="Password" class="w-1/2 px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0085FD]">
+        <button id="addAdminUserBtn" class="bg-[#0085FD] text-white p-3 rounded-xl hover:bg-[#0066cc]"><i data-lucide="plus" class="w-6 h-6"></i></button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">User Database</h3>
+          <div class="bg-white/40 border border-gray-100 rounded-2xl p-2 max-h-52 overflow-y-auto">
+            <ul id="userListContainer" class="space-y-2 text-sm"></ul>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Recent Logs</h3>
+          <div class="bg-white/40 border border-gray-100 rounded-2xl p-2 max-h-52 overflow-y-auto">
+            <ul id="logListContainer" class="space-y-2 text-[10px]"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // สั่งให้วาดไอคอน Lucide ขึ้นมาบนหน้าจอ
     lucide.createIcons();
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
 
-    // ประกาศตัวแปรอ้างอิงถึง UI ต่างๆ
-    const loginForm = document.getElementById('loginForm');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const errorMsg = document.getElementById('errorMsg');
-    const errorText = document.getElementById('errorText');
-    const submitBtn = document.getElementById('submitBtn');
-    const loginView = document.getElementById('loginView');
-    const dashboardView = document.getElementById('dashboardView');
-    const logoutBtn = document.getElementById('logoutBtn');
+    async function callAPI(action, payload = {}) {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: action, ...payload })
+        });
+        return await response.json();
+      } catch (error) {
+        return { success: false, error: "Network Error" };
+      }
+    }
 
-    // จัดการเมื่อกดปุ่ม Login
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // ป้องกันหน้าเว็บ Refresh
+    // --- Session Management (Using localStorage for persistence) ---
+    function checkActiveSession() {
+      const activeUser = localStorage.getItem('ppac_active_user');
+      if (activeUser) {
+        document.getElementById('displayUsername').innerText = activeUser;
+        document.getElementById('loginView').classList.add('hidden');
+        document.getElementById('dashboardView').classList.remove('hidden');
+        document.getElementById('dashboardView').classList.add('block');
+      }
+    }
+    checkActiveSession();
+
+    // --- Login Logic ---
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMsg = document.getElementById('errorMsg');
         
-        const user = usernameInput.value;
-        const pass = passwordInput.value;
-        
-        // ซ่อนข้อความ Error ก่อน
-        errorMsg.classList.remove('flex');
+        if(!user || !pass) return;
         errorMsg.classList.add('hidden');
-        
-        // เปลี่ยนสถานะปุ่มเป็นโหมด Loading
-        submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>';
+        submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
         submitBtn.disabled = true;
 
-        // จำลองเวลาโหลดติดต่อ Backend 1 วินาที
-        setTimeout(() => {
-            if (user === 'admin' && pass === '1234') {
-                // หาก Login สำเร็จ
-                // 1. ซ่อนหน้า Login
-                loginView.classList.add('hidden');
-                loginView.classList.remove('flex');
-                
-                // 2. แสดงหน้า Dashboard (Iframe)
-                dashboardView.classList.remove('hidden');
-                dashboardView.classList.add('block');
-            } else {
-                // หาก Login ไม่สำเร็จ แสดงข้อความ Error
-                errorText.innerText = 'Username หรือ Password ไม่ถูกต้อง';
-                errorMsg.classList.remove('hidden');
-                errorMsg.classList.add('flex');
-            }
-            
-            // คืนค่าปุ่มให้กลับมาเป็นแบบเดิม
+        const result = await callAPI('login', { user: user, pass: pass });
+
+        if (result.success) {
+            localStorage.setItem('ppac_active_user', user);
+            location.reload(); // Refresh to apply session
+        } else {
+            document.getElementById('errorText').innerText = result.error ? 'Database connection failed' : 'Username or Password incorrect';
+            errorMsg.classList.remove('hidden');
+            errorMsg.classList.add('flex');
             submitBtn.innerHTML = '<i data-lucide="log-in" class="w-4 h-4"></i><span>SIGN IN</span>';
-            lucide.createIcons(); // สั่งวาดไอคอนใหม่
+            lucide.createIcons();
             submitBtn.disabled = false;
-            
-        }, 1000);
+        }
     });
 
-    // จัดการเมื่อกดปุ่ม Logout
-    logoutBtn.addEventListener('click', function() {
-        // ล้างค่าในช่องกรอก
-        usernameInput.value = '';
-        passwordInput.value = '';
-        
-        // ซ่อนหน้า Dashboard (Iframe)
-        dashboardView.classList.remove('block');
-        dashboardView.classList.add('hidden');
-        
-        // แสดงหน้า Login กลับมา
-        loginView.classList.remove('hidden');
-        loginView.classList.add('flex');
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('ppac_active_user');
+        location.reload();
+    });
+
+    // --- Secret Admin Panel ---
+    let clicks = 0;
+    document.getElementById('secretTriggerLogin').addEventListener('click', () => {
+      clicks++;
+      if (clicks >= 5) { openAdmin(); clicks = 0; }
+      setTimeout(() => clicks = 0, 2000);
+    });
+
+    async function openAdmin() {
+      document.getElementById('adminModal').classList.remove('hidden');
+      document.getElementById('adminModal').classList.add('flex');
+      await Promise.all([renderUsers(), renderLogs()]);
+    }
+
+    document.getElementById('closeAdminBtn').addEventListener('click', () => {
+      document.getElementById('adminModal').classList.add('hidden');
+    });
+
+    async function renderUsers() {
+      const res = await callAPI('getUsers');
+      const container = document.getElementById('userListContainer');
+      container.innerHTML = '';
+      if(res.success) {
+        res.users.forEach(u => {
+          const li = document.createElement('li');
+          li.className = "flex justify-between items-center p-2.5 bg-white rounded-xl shadow-sm border border-gray-100";
+          li.innerHTML = `<span><b>${u.username}</b> <span class="text-gray-300 ml-1">${u.password}</span></span>
+            ${u.username !== 'admin' ? `<button onclick="deleteUser('${u.username}')" class="text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}`;
+          container.appendChild(li);
+        });
+        lucide.createIcons();
+      }
+    }
+
+    async function renderLogs() {
+      const res = await callAPI('getLogs');
+      const container = document.getElementById('logListContainer');
+      container.innerHTML = '';
+      if(res.success) {
+        res.logs.forEach(l => {
+          const li = document.createElement('li');
+          li.className = "p-2 bg-white/60 rounded-lg border border-gray-50 mb-1";
+          li.innerHTML = `<div class="flex justify-between"><b>${l.username}</b> <span class="${l.status === 'Success' ? 'text-emerald-500' : 'text-red-400'}">${l.status}</span></div><div class="text-gray-400">${l.time}</div>`;
+          container.appendChild(li);
+        });
+      }
+    }
+
+    window.deleteUser = async (user) => {
+      if(confirm(`Delete ${user}?`)) {
+        await callAPI('deleteUser', { user: user });
+        renderUsers();
+      }
+    }
+
+    document.getElementById('addAdminUserBtn').addEventListener('click', async () => {
+      const u = document.getElementById('newAdminUser').value;
+      const p = document.getElementById('newAdminPass').value;
+      if(u && p) {
+        await callAPI('addUser', { user: u, pass: p });
+        document.getElementById('newAdminUser').value = '';
+        document.getElementById('newAdminPass').value = '';
+        renderUsers();
+      }
     });
   </script>
 </body>
