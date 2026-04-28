@@ -70,7 +70,7 @@
       </div>
 
       <!-- ปุ่ม Report Page -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/genarate.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
+      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
         <i data-lucide="file-text" class="w-4 h-4"></i>
         <span class="font-medium text-sm hidden sm:inline">Report Page</span>
       </a>
@@ -167,11 +167,10 @@
     const logoutBtn = document.getElementById('logoutBtn');
 
     // ========================================================
-    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ (แก้เป็น localStorage)
+    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ
     // ========================================================
     function checkActiveSession() {
-      // เปลี่ยนจาก sessionStorage เป็น localStorage
-      const activeUser = localStorage.getItem('ppac_active_user');
+      const activeUser = sessionStorage.getItem('ppac_active_user');
       if (activeUser) {
         document.getElementById('displayUsername').innerText = activeUser;
         loginView.classList.add('hidden');
@@ -202,8 +201,7 @@
         const result = await callAPI('login', { user: user, pass: pass });
 
         if (result.success) {
-            // เปลี่ยนจาก sessionStorage เป็น localStorage
-            localStorage.setItem('ppac_active_user', user);
+            sessionStorage.setItem('ppac_active_user', user);
             document.getElementById('displayUsername').innerText = user;
             loginView.classList.add('hidden');
             loginView.classList.remove('flex');
@@ -221,8 +219,7 @@
     });
 
     logoutBtn.addEventListener('click', function() {
-        // เปลี่ยนจาก sessionStorage เป็น localStorage
-        localStorage.removeItem('ppac_active_user');
+        sessionStorage.removeItem('ppac_active_user');
         usernameInput.value = '';
         passwordInput.value = '';
         dashboardView.classList.remove('block');
