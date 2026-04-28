@@ -110,23 +110,60 @@
       <!-- Action Buttons -->
       <div class="flex items-center gap-3">
         
-        <!-- Expanded Menu (Hidden by default) -->
-        <div id="expandedMenu" class="flex items-center gap-3 overflow-hidden transition-all duration-500 ease-in-out max-w-0 opacity-0 pointer-events-none">
-            <!-- เพิ่มลิงก์หน้าอื่นๆ ตรงนี้ได้เลยครับ -->
-            <a href="#" class="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-50 border border-white transition-all duration-300 text-slate-600 shadow-[0_5px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-md cursor-pointer no-underline whitespace-nowrap">
-                <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                <span class="font-medium text-sm tracking-wide">Dashboard</span>
-            </a>
-            <a href="#" class="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-50 border border-white transition-all duration-300 text-slate-600 shadow-[0_5px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-md cursor-pointer no-underline whitespace-nowrap">
-                <i data-lucide="settings" class="w-4 h-4"></i>
-                <span class="font-medium text-sm tracking-wide">Settings</span>
-            </a>
-        </div>
+        <!-- Toggle Button & Vertical Pop-up Menu Container -->
+        <div class="relative flex items-center">
+            
+            <!-- Expanded Menu (Vertical Pop-up) -->
+            <div id="expandedMenu" class="absolute bottom-[calc(100%+1rem)] right-0 flex flex-col items-end gap-3 transition-all duration-500 ease-out opacity-0 translate-y-6 scale-95 pointer-events-none origin-bottom-right z-50">
+                
+                <!-- 1. ลักษณะบุคลิกภาพ(นก) -->
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">ลักษณะบุคลิกภาพ(นก)</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="thumbs-up" class="w-4 h-4"></i></div>
+                </a>
 
-        <!-- Toggle Expand Button -->
-        <button id="toggleMenuBtn" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer shrink-0">
-            <i data-lucide="plus" id="toggleIcon" class="w-5 h-5 transition-transform duration-500 rotate-0"></i>
-        </button>
+                <!-- 2. ตารางศักยภาพ -->
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">ตารางศักยภาพ</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="layout-template" class="w-4 h-4"></i></div>
+                </a>
+
+                <!-- 3. การทำงานของสมองและ Learning Style -->
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">การทำงานของสมองและ Learning Style/Type</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                </a>
+
+                <!-- 4. สรุปศักยภาพ -->
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">สรุปศักยภาพ</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="briefcase" class="w-4 h-4"></i></div>
+                </a>
+
+                <!-- 5. Corporate: จุดแข็ง จุดอ่อน... -->
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline group max-w-sm sm:max-w-md text-right">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-0.5">Corporate</span>
+                        <span class="font-medium text-sm tracking-wide truncate max-w-[14rem] sm:max-w-[20rem]">จุดแข็ง จุดอ่อน กลุ่มงาน รูปแบบการพัฒนา และหลักสูตรการฝึกอบรม</span>
+                    </div>
+                    <div class="w-9 h-9 shrink-0 rounded-xl bg-red-50/50 flex items-center justify-center text-red-600 group-hover:bg-red-50 transition-colors duration-300 border border-red-50"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                </a>
+
+                <!-- 6. Corporate: ปก -->
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-0.5">Corporate</span>
+                        <span class="font-medium text-sm tracking-wide">ปก Corporate</span>
+                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-red-50/50 flex items-center justify-center text-red-600 group-hover:bg-red-50 transition-colors duration-300 border border-red-50"><i data-lucide="building-2" class="w-4 h-4"></i></div>
+                </a>
+            </div>
+
+            <!-- Toggle Expand Button -->
+            <button id="toggleMenuBtn" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer shrink-0 z-[51] relative">
+                <i data-lucide="layout-grid" id="toggleIcon" class="w-5 h-5 transition-transform duration-500 rotate-0"></i>
+            </button>
+        </div>
 
         <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer no-underline group shrink-0">
             <i data-lucide="file-text" class="w-4 h-4 transition-transform duration-500 group-hover:scale-110"></i>
@@ -173,11 +210,32 @@
         </button>
       </div>
 
-    <script>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+            <i data-lucide="users" class="w-3 h-3"></i> User Database
+          </h3>
+          <div class="bg-slate-50/50 border border-slate-100 rounded-2xl p-3 h-64 overflow-y-auto">
+            <ul id="userListContainer" class="space-y-2 text-sm"></ul>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+            <i data-lucide="activity" class="w-3 h-3"></i> System Logs
+          </h3>
+          <div class="bg-slate-50/50 border border-slate-100 rounded-2xl p-3 h-64 overflow-y-auto">
+            <ul id="logListContainer" class="space-y-2 text-[11px]"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
     lucide.createIcons();
     const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
 
-    // --- Expandable Menu Logic ---
+    // --- Vertical Expandable Menu Logic ---
     const toggleMenuBtn = document.getElementById('toggleMenuBtn');
     const expandedMenu = document.getElementById('expandedMenu');
     const toggleIcon = document.getElementById('toggleIcon');
@@ -186,13 +244,15 @@
     toggleMenuBtn.addEventListener('click', () => {
         isMenuExpanded = !isMenuExpanded;
         if (isMenuExpanded) {
-            expandedMenu.classList.remove('max-w-0', 'opacity-0', 'pointer-events-none');
-            expandedMenu.classList.add('max-w-[500px]', 'opacity-100', 'pointer-events-auto');
+            // Show Pop-up
+            expandedMenu.classList.remove('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
+            expandedMenu.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
             toggleIcon.classList.remove('rotate-0');
             toggleIcon.classList.add('rotate-45');
         } else {
-            expandedMenu.classList.add('max-w-0', 'opacity-0', 'pointer-events-none');
-            expandedMenu.classList.remove('max-w-[500px]', 'opacity-100', 'pointer-events-auto');
+            // Hide Pop-up
+            expandedMenu.classList.add('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
+            expandedMenu.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
             toggleIcon.classList.remove('rotate-45');
             toggleIcon.classList.add('rotate-0');
         }
