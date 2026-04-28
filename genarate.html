@@ -1,293 +1,365 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>P-PAC ภาษาไทย | Analytics Dashboard</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      /* Elevated White-mode Palette */
-      --bg-base: #f4f6f9; /* Slightly off-white background */
-      --card-bg: #ffffff;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --divider: #e2e8f0;
-      --accent-primary: #4f46e5;
-      --accent-hover: #4338ca;
-      
-      /* Wide, gently elevated shadows */
-      --shadow-base: 0 15px 35px -5px rgba(15, 23, 42, 0.04), 0 5px 15px -5px rgba(15, 23, 42, 0.02);
-      --shadow-hover: 0 25px 50px -12px rgba(15, 23, 42, 0.12), 0 10px 25px -10px rgba(15, 23, 42, 0.06);
-      
-      /* Fonts */
-      --font-th: 'Kanit', sans-serif;
-      --font-en: 'Inter', sans-serif;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background-color: var(--bg-base);
-      color: var(--text-main);
-      font-family: var(--font-th);
-      font-weight: 300;
-      line-height: 1.6;
-      overflow-x: hidden;
-      min-height: 100vh;
-      scroll-behavior: smooth;
-    }
-
-    /* --- Container & Nav --- */
-    .container {
-      max-width: 1200px; margin: 0 auto; padding: 0 24px;
-    }
-    
-    nav {
-      position: fixed; top: 0; left: 0; width: 100%; padding: 20px 0; z-index: 100;
-      background: rgba(244, 246, 249, 0.85);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.03);
-    }
-    .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: var(--font-en); font-weight: 600; font-size: 1.25rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
-
-    /* --- Workspace Link Button --- */
-    .workspace-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-en);
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: var(--accent-primary);
-      text-decoration: none;
-      padding: 8px 20px;
-      background: #ffffff;
-      border: 1px solid rgba(79, 70, 229, 0.2);
-      border-radius: 100px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
-    }
-    .workspace-link:hover {
-      background: var(--accent-primary);
-      color: #ffffff;
-      border-color: var(--accent-primary);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
-    }
-
-    /* --- Dashboard Section --- */
-    .dashboard-section { padding: 120px 0 120px; }
-    
-    /* Consistent Spacing */
-    .grid-container {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; width: 100%;
-    }
-
-    /* Elevated Cards */
-    .elevated-card {
-      position: relative; display: flex; flex-direction: column; padding: 36px 32px;
-      background: var(--card-bg); border-radius: 20px;
-      box-shadow: var(--shadow-base);
-      text-decoration: none; color: var(--text-main); overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.01);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-    }
-    .elevated-card:hover {
-      transform: translateY(-6px); 
-      box-shadow: var(--shadow-hover);
-    }
-
-    /* Thin Icons */
-    .icon-wrapper {
-      width: 52px; height: 52px; border-radius: 14px; background: #f8fafc;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
-      border: 1px solid #e2e8f0; color: #475569;
-      transition: all 0.3s ease;
-    }
-    .elevated-card:hover .icon-wrapper {
-      background: var(--accent-primary); color: #ffffff; border-color: var(--accent-primary);
-    }
-    
-    /* Short Title */
-    .card-title { font-size: 1.25rem; font-weight: 500; margin-bottom: 24px; color: #0f172a; flex-grow: 1; line-height: 1.4; }
-
-    /* Explicit Action Button */
-    .card-action {
-      display: inline-flex; align-items: center; font-size: 0.95rem; font-weight: 500;
-      color: var(--accent-primary); gap: 8px; transition: gap 0.3s;
-    }
-    .elevated-card:hover .card-action { gap: 12px; }
-
-    /* --- Separator --- */
-    .section-divider {
-      width: 100%; height: 1px; background: var(--divider);
-      margin: 64px 0; position: relative;
-    }
-
-    /* --- Special Group (Corporate & Cloud) --- */
-    .special-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;
-    }
-    
-    /* Red Ribbon for Corporate */
-    .card-corporate { border: 1px solid rgba(220, 38, 38, 0.1); }
-    .card-corporate .icon-wrapper { color: #dc2626; }
-    .card-corporate .card-action { color: #dc2626; }
-    
-    .card-corporate:hover .icon-wrapper { background: #dc2626; color: #ffffff; border-color: #dc2626; }
-    .card-corporate:hover .card-action { color: #dc2626; }
-
-    .ribbon {
-      position: absolute; top: 24px; right: -32px; background: #dc2626; color: #fff;
-      padding: 6px 40px; font-size: 0.75rem; font-family: var(--font-en); font-weight: 500;
-      letter-spacing: 1px; transform: rotate(45deg); box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
-      z-index: 10; text-align: center; width: 150px;
-    }
-    
-    /* Cloud Banner Styles */
-    .cloud-banner {
-      display: flex; align-items: center; gap: 32px; padding: 40px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,249,255,0.9) 100%);
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 24px;
-      text-decoration: none; color: var(--text-main); width: 100%;
-      box-shadow: 0 15px 35px -5px rgba(14, 165, 233, 0.1);
-      transition: all 0.4s ease;
-    }
-    .cloud-banner:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.2);
-      border-color: rgba(14, 165, 233, 0.4);
-    }
-    .banner-icon {
-      width: 80px; height: 80px; flex-shrink: 0;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-      border-radius: 20px; display: flex; justify-content: center; align-items: center;
-      color: #fff; box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
-      transition: transform 0.4s ease;
-    }
-    .cloud-banner:hover .banner-icon {
-      transform: scale(1.05) rotate(5deg);
-    }
-    .banner-content { flex-grow: 1; }
-    .banner-title { font-size: 1.5rem; font-weight: 500; color: #0f172a; margin-bottom: 0; }
-    .banner-action {
-      display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0;
-      background: #ffffff; color: #0ea5e9; padding: 14px 28px;
-      border-radius: 100px; font-weight: 500; font-size: 1rem;
-      border: 1px solid rgba(14, 165, 233, 0.2); transition: all 0.3s ease;
-    }
-    .cloud-banner:hover .banner-action { background: #0ea5e9; color: #ffffff; border-color: #0ea5e9; }
-
-    @media (max-width: 768px) {
-      .dashboard-section { padding: 100px 0 60px; }
-      .elevated-card { padding: 28px 24px; }
-      .cloud-banner { flex-direction: column; text-align: center; padding: 32px 24px; gap: 24px; }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>P-PAC WORKSPACE</title>
+  
+  <!-- โหลด Tailwind CSS ผ่าน CDN เพื่องานดีไซน์ -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- โหลด Lucide Icons ผ่าน CDN สำหรับไอคอนต่างๆ -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="bg-gradient-to-br from-[#fdfdfd] to-[#e2e2e2] font-sans text-gray-700 m-0 p-0">
 
-  <!-- Navigation -->
-  <nav>
-    <div class="container nav-inner">
-      <a href="#" class="logo">P-PAC ภาษาไทย</a>
-      
-      <!-- เพิ่มปุ่ม Workspace ไปยังลิงก์ที่กำหนด -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="workspace-link">
-        Workspace
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-      </a>
+  <!-- ================= หน้าจอ Login ================= -->
+  <div id="loginView" class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-white/45 backdrop-blur-xl border border-white/90 shadow-[0_10px_40px_0_rgba(0,0,0,0.08)] rounded-3xl p-8 relative overflow-hidden">
+        
+        <!-- Decorative bg สำหรับความเงางาม Metallic -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-400/30 to-transparent"></div>
+
+        <div class="text-center mb-8">
+          <!-- จุดซ่อนความลับที่ 1: กดคำว่า P-PAC 5 ครั้ง -->
+          <h2 id="secretTriggerLogin" class="text-xl font-light tracking-[0.2em] text-gray-600 uppercase mb-2 cursor-default select-none">P-PAC</h2>
+          <h3 class="text-sm tracking-wider text-gray-400 uppercase">Workspace Access</h3>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i data-lucide="user" class="text-gray-400 w-4 h-4"></i>
+            </div>
+            <input type="text" id="username" placeholder="Username" class="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
+          </div>
+          
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i data-lucide="lock" class="text-gray-400 w-4 h-4"></i>
+            </div>
+            <input type="password" id="password" placeholder="Password" class="w-full pl-10 pr-4 py-3 bg-white/50 border border-white/80 rounded-xl text-sm focus:bg-white/90 focus:border-white focus:ring-2 focus:ring-white/50 focus:outline-none transition-all shadow-[inset_0_2px_5px_rgba(0,0,0,0.02)]">
+          </div>
+
+          <!-- กล่องข้อความ Error (ซ่อนไว้ก่อน) -->
+          <div id="errorMsg" class="hidden items-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 p-2 rounded-lg border border-red-100">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+            <span id="errorText"></span>
+          </div>
+
+          <button type="submit" id="submitBtn" class="w-full mt-6 bg-gradient-to-br from-white to-[#e6e6e6] hover:from-[#f4f4f4] hover:to-[#d4d4d4] border border-white text-gray-600 font-semibold tracking-wide py-3.5 rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 flex justify-center items-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4" id="btnIcon"></i>
+            <span id="btnText">SIGN IN</span>
+          </button>
+        </form>
     </div>
-  </nav>
+  </div>
 
-  <!-- Dashboard Panels -->
-  <section id="dashboard" class="dashboard-section container">
+  <!-- ================= หน้าจอ Dashboard (Iframe จะถูกซ่อนไว้ตอนแรก) ================= -->
+  <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#fdfdfd]">
     
-    <!-- Group 1: Main Modules (5 Items) -->
-    <div class="grid-container">
+    <!-- จุดซ่อนความลับที่ 2: ปุ่มล่องหนมุมซ้ายล่างสุดของจอ กด 5 ครั้ง -->
+    <div id="secretTriggerDash" class="fixed bottom-0 left-0 w-16 h-16 z-[1000000] cursor-default bg-transparent"></div>
+
+    <!-- กลุ่มเมนูมุมขวาล่าง แบบลอย (Floating) ซ้อนอยู่เหนือ Iframe -->
+    <div style="z-index: 1000000;" class="fixed bottom-4 right-4 flex flex-col items-end gap-3">
       
-      <!-- 1. ลักษณะบุคลิกภาพ(นก) -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/bird.html" class="elevated-card">
-        <div class="icon-wrapper">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
-        </div>
-        <h3 class="card-title">ลักษณะบุคลิกภาพ(นก)</h3>
-        <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
+      <!-- แสดงชื่อผู้ใช้ (Greeting) -->
+      <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg cursor-default">
+        <i data-lucide="smile" class="w-4 h-4 text-indigo-500"></i>
+        <span class="font-medium text-sm text-gray-700">Hello! <span id="displayUsername" class="font-bold text-indigo-600"></span></span>
+      </div>
+
+      <!-- ปุ่ม Report Page -->
+      <a href="https://marketingppac-create.github.io/ppacpasathai/genarate.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-blue-600 shadow-lg cursor-pointer no-underline">
+        <i data-lucide="file-text" class="w-4 h-4"></i>
+        <span class="font-medium text-sm hidden sm:inline">Report Page</span>
       </a>
 
-      <!-- 2. ตารางศักยภาพ -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/10.html" class="elevated-card">
-        <div class="icon-wrapper">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-        </div>
-        <h3 class="card-title">ตารางศักยภาพ</h3>
-        <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-      </a>
+      <!-- ปุ่ม Logout -->
+      <button id="logoutBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 backdrop-blur-md hover:bg-white border border-gray-200 transition-all text-gray-700 hover:text-red-500 shadow-lg cursor-pointer">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+        <span class="font-medium text-sm hidden sm:inline">Sign Out</span>
+      </button>
 
-      <!-- 3. การทำงานของสมองและ Learning Style/Type -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/brain.html" class="elevated-card">
-        <div class="icon-wrapper">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-        </div>
-        <h3 class="card-title">การทำงานของสมองและ Learning Style/Type</h3>
-        <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-      </a>
-
-      <!-- 4. สรุปศักยภาพ -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/career.html" class="elevated-card">
-        <div class="icon-wrapper">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-        </div>
-        <h3 class="card-title">สรุปศักยภาพ</h3>
-        <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-      </a>
-
-      <!-- 5. จุดแข็ง จุดอ่อน กลุ่มงาน รูปแบบการพัฒนา และหลักสูตรการฝึกอบรม -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/weakness.html" class="elevated-card card-corporate">
-        <div class="ribbon">Corporate</div>
-        <div class="icon-wrapper">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-        </div>
-        <h3 class="card-title">จุดแข็ง จุดอ่อน กลุ่มงาน รูปแบบการพัฒนา และหลักสูตรการฝึกอบรม</h3>
-        <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-      </a>
-
-      <!-- 6. ปก Corporate -->
-      <a href="https://marketingppac-create.github.io/ppacpasathai/covercopt.html" class="elevated-card card-corporate">
-        <div class="ribbon">Corporate</div>
-        <div class="icon-wrapper">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-        </div>
-        <h3 class="card-title">ปก Corporate</h3>
-        <div class="card-action">สร้าง <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-      </a>
     </div>
 
-    <!-- Divider -->
-    <div class="section-divider"></div>
+    <!-- นำ Iframe หน้า GAS ของคุณมาฝังแบบเต็มหน้าจอ -->
+    <iframe 
+      src="https://script.google.com/macros/s/AKfycby_PIFyhk7fIqLSGLaT6N05oAgTwdFD-5WM4ruvutVnXlAfBjJdAWOcQTmAuhQ1Wm5Clg/exec" 
+      style="position: fixed; top: 0; bottom: 0; right: 0; width: 100%; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999; height: 100%;"
+      title="P-PAC WORKSPACE">
+    </iframe>
+  </div>
 
-    <!-- Cloud / File Management Banner -->
-    <a href="https://marketingppac-create.github.io/ppacpasathai/merger.html" target="_blank" class="cloud-banner">
-      <div class="banner-icon">
-        <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+  <!-- ================= หน้าต่างลับสำหรับจัดการ User (Secret Admin Modal) ================= -->
+  <div id="adminModal" class="hidden fixed inset-0 z-[1000005] bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white shadow-2xl rounded-3xl p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+          <i data-lucide="shield" class="w-5 h-5 text-indigo-500"></i>
+          Secret Panel
+        </h2>
+        <button id="closeAdminBtn" class="text-gray-400 hover:text-gray-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
-      <div class="banner-content">
-        <h3 class="banner-title">รวมไฟล์</h3>
-      </div>
-      <div class="banner-action">
-        สร้าง <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-      </div>
-    </a>
 
-  </section>
+      <!-- ฟอร์มเพิ่ม User ใหม่ -->
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="newAdminUser" placeholder="New Username" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
+        <input type="text" id="newAdminPass" placeholder="Password" class="w-1/2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400">
+        <button id="addAdminUserBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg transition-colors">
+          <i data-lucide="plus" class="w-5 h-5"></i>
+        </button>
+      </div>
 
+      <!-- รายชื่อ User -->
+      <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-40 overflow-y-auto mb-4">
+        <ul id="userListContainer" class="space-y-2">
+          <!-- จะใช้ Javascript สร้างรายชื่อตรงนี้ -->
+        </ul>
+      </div>
+
+      <!-- ส่วนแสดงประวัติการ Login (Logs) -->
+      <h3 class="text-sm font-bold text-gray-700 mb-2 flex items-center gap-2 border-t border-gray-200 pt-4">
+        <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Login Activity
+      </h3>
+      <div class="bg-white/50 border border-gray-100 rounded-xl p-2 max-h-40 overflow-y-auto">
+        <ul id="logListContainer" class="space-y-2">
+          <!-- ประวัติ Login จะมาแสดงที่นี่ -->
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= ส่วนของ Javascript ================= -->
+  <script>
+    lucide.createIcons();
+
+    // ★★★ API URL เชื่อมต่อกับ Google Sheets Backend (ให้ AI ช่วยจำไว้ให้แล้ว) ★★★
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw8OW_R9CQx-tdyRyPlu6KKdfDHRhUL1iDHnwV6-h1JcIAaN9h5lMdDWUZDuP2GajjHOw/exec';
+
+    // ฟังก์ชันหลักสำหรับสื่อสารกับ Google Sheets
+    async function callAPI(action, payload = {}) {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: action, ...payload })
+        });
+        return await response.json();
+      } catch (error) {
+        console.error("API Error:", error);
+        return { success: false, error: "Network Error" };
+      }
+    }
+
+    // อ้างอิง UI
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const errorMsg = document.getElementById('errorMsg');
+    const errorText = document.getElementById('errorText');
+    const submitBtn = document.getElementById('submitBtn');
+    const loginView = document.getElementById('loginView');
+    const dashboardView = document.getElementById('dashboardView');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // ========================================================
+    // ★ ฟังก์ชันเช็ค Session ตอนเปิดเว็บ
+    // ========================================================
+    function checkActiveSession() {
+      const activeUser = sessionStorage.getItem('ppac_active_user');
+      if (activeUser) {
+        document.getElementById('displayUsername').innerText = activeUser;
+        loginView.classList.add('hidden');
+        loginView.classList.remove('flex');
+        dashboardView.classList.remove('hidden');
+        dashboardView.classList.add('block');
+      }
+    }
+    checkActiveSession();
+
+    // ========================================================
+    // ★ จัดการการ Login (ตรวจสอบกับ Google Sheets)
+    // ========================================================
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const user = usernameInput.value.trim();
+        const pass = passwordInput.value.trim();
+        
+        if(!user || !pass) return;
+
+        errorMsg.classList.add('hidden');
+        errorMsg.classList.remove('flex');
+        
+        submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>';
+        submitBtn.disabled = true;
+
+        // วิ่งไปเช็คกับ Google Sheets API
+        const result = await callAPI('login', { user: user, pass: pass });
+
+        if (result.success) {
+            sessionStorage.setItem('ppac_active_user', user);
+            document.getElementById('displayUsername').innerText = user;
+            loginView.classList.add('hidden');
+            loginView.classList.remove('flex');
+            dashboardView.classList.remove('hidden');
+            dashboardView.classList.add('block');
+        } else {
+            errorText.innerText = 'Username หรือ Password ไม่ถูกต้อง';
+            errorMsg.classList.remove('hidden');
+            errorMsg.classList.add('flex');
+        }
+        
+        submitBtn.innerHTML = '<i data-lucide="log-in" class="w-4 h-4"></i><span>SIGN IN</span>';
+        lucide.createIcons();
+        submitBtn.disabled = false;
+    });
+
+    logoutBtn.addEventListener('click', function() {
+        sessionStorage.removeItem('ppac_active_user');
+        usernameInput.value = '';
+        passwordInput.value = '';
+        dashboardView.classList.remove('block');
+        dashboardView.classList.add('hidden');
+        loginView.classList.remove('hidden');
+        loginView.classList.add('flex');
+    });
+
+    // ========================================================
+    // ★ ระบบลับ (Secret Admin Panel) - โหลดตรงจาก Google Sheets
+    // ========================================================
+    let clickCount = 0;
+    let clickTimer;
+
+    function handleSecretClick() {
+      clickCount++;
+      clearTimeout(clickTimer);
+      if (clickCount >= 5) {
+        openAdminModal();
+        clickCount = 0;
+      } else {
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+      }
+    }
+
+    document.getElementById('secretTriggerLogin').addEventListener('click', handleSecretClick);
+    document.getElementById('secretTriggerDash').addEventListener('click', handleSecretClick);
+
+    const adminModal = document.getElementById('adminModal');
+    const closeAdminBtn = document.getElementById('closeAdminBtn');
+    const userListContainer = document.getElementById('userListContainer');
+    const logListContainer = document.getElementById('logListContainer');
+    const addAdminUserBtn = document.getElementById('addAdminUserBtn');
+    const newAdminUser = document.getElementById('newAdminUser');
+    const newAdminPass = document.getElementById('newAdminPass');
+
+    async function openAdminModal() {
+      adminModal.classList.remove('hidden');
+      adminModal.classList.add('flex');
+      
+      userListContainer.innerHTML = '<div class="text-center p-4"><div class="inline-block w-6 h-6 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div><p class="text-xs mt-2">Loading data from Google Sheets...</p></div>';
+      logListContainer.innerHTML = '<div class="text-center p-4"><div class="inline-block w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div></div>';
+      
+      await renderUserList();
+      await renderLogList();
+    }
+
+    closeAdminBtn.addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+      adminModal.classList.remove('flex');
+    });
+
+    // โหลดรายชื่อ User จาก Google Sheets
+    async function renderUserList() {
+      const response = await callAPI('getUsers');
+      userListContainer.innerHTML = '';
+      
+      if(response.success && response.users) {
+        response.users.forEach((u) => {
+          const li = document.createElement('li');
+          li.className = "flex justify-between items-center p-2 bg-white rounded-lg border border-gray-100 shadow-sm";
+          const isSuperAdmin = u.username === 'admin';
+          li.innerHTML = `
+            <div>
+              <span class="font-medium text-gray-700 text-sm">${u.username}</span>
+              <span class="text-xs text-gray-400 ml-2">Pass: ${u.password}</span>
+            </div>
+            ${isSuperAdmin ? 
+              `<span class="text-[10px] font-bold text-indigo-400 bg-indigo-50 px-2 py-1 rounded uppercase tracking-wider">Master</span>` : 
+              `<button onclick="deleteUser('${u.username}')" class="text-red-400 hover:text-red-600 p-1 rounded-md hover:bg-red-50 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`
+            }
+          `;
+          userListContainer.appendChild(li);
+        });
+      }
+      lucide.createIcons();
+    }
+
+    // โหลดประวัติการ Login (Logs) จาก Google Sheets
+    async function renderLogList() {
+      const response = await callAPI('getLogs');
+      logListContainer.innerHTML = '';
+      
+      if(response.success && response.logs) {
+        if (response.logs.length === 0) {
+          logListContainer.innerHTML = '<li class="text-xs text-gray-400 text-center p-2">ไม่มีประวัติการใช้งาน</li>';
+          return;
+        }
+        response.logs.forEach((log) => {
+          const li = document.createElement('li');
+          li.className = "flex justify-between items-center p-2 bg-white rounded-lg border border-gray-100 shadow-sm";
+          const isSuccess = log.status === 'Success';
+          li.innerHTML = `
+            <div class="flex flex-col">
+              <span class="font-medium text-gray-700 text-sm">${log.username}</span>
+              <span class="text-[10px] text-gray-400">${log.time}</span>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider ${isSuccess ? 'bg-emerald-50 text-emerald-500' : 'bg-red-50 text-red-500'}">
+              ${log.status}
+            </span>
+          `;
+          logListContainer.appendChild(li);
+        });
+      }
+    }
+
+    // เพิ่ม User ไปยัง Google Sheets
+    addAdminUserBtn.addEventListener('click', async () => {
+      const uName = newAdminUser.value.trim();
+      const uPass = newAdminPass.value.trim();
+      
+      if (!uName || !uPass) return alert("กรุณากรอก Username และ Password ให้ครบถ้วน");
+
+      // โชว์ Loading บนปุ่ม
+      addAdminUserBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+      
+      const response = await callAPI('addUser', { user: uName, pass: uPass });
+      if(response.success) {
+         await renderUserList();
+         newAdminUser.value = '';
+         newAdminPass.value = '';
+      } else {
+         alert("เกิดข้อผิดพลาดในการเพิ่ม User");
+      }
+      
+      addAdminUserBtn.innerHTML = '<i data-lucide="plus" class="w-5 h-5"></i>';
+      lucide.createIcons();
+    });
+
+    // ลบ User จาก Google Sheets
+    window.deleteUser = async function(username) {
+      if (confirm(`ลบ User: ${username} ถาวรหรือไม่ ?`)) {
+        userListContainer.innerHTML = '<div class="text-center p-4 text-xs text-gray-500">Deleting...</div>';
+        const response = await callAPI('deleteUser', { user: username });
+        if(response.success) {
+           await renderUserList();
+        }
+      }
+    };
+
+  </script>
 </body>
 </html>
