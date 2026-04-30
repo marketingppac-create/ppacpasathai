@@ -160,17 +160,19 @@
             </div>
 
             <!-- Toggle Expand Button -->
-            <button id="toggleMenuBtn" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer shrink-0 z-[51] relative">
-                <i data-lucide="layout-grid" id="toggleIcon" class="w-5 h-5 transition-transform duration-500 rotate-0"></i>
+            <button id="toggleMenuBtn" title="Menu" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer shrink-0 z-[51] relative">
+                <i data-lucide="layout-grid" id="iconOpen" class="w-5 h-5 absolute transition-all duration-500 scale-100 rotate-0 opacity-100"></i>
+                <i data-lucide="x" id="iconClose" class="w-5 h-5 absolute transition-all duration-500 scale-50 rotate-90 opacity-0"></i>
             </button>
         </div>
 
-        <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer no-underline group shrink-0">
-            <i data-lucide="file-text" class="w-4 h-4 transition-transform duration-500 group-hover:scale-110"></i>
-            <span class="font-medium text-sm tracking-wide">WorkSpace</span>
+        <!-- WORKSPACE BUTTON (Changed to Icon) -->
+        <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" title="Workspace" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer no-underline group shrink-0">
+            <i data-lucide="file-text" class="w-5 h-5 transition-transform duration-500 group-hover:scale-110"></i>
         </a>
 
-        <button id="logoutBtn" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-red-50 hover:border-red-100 hover:text-red-500 border border-white transition-all duration-500 text-slate-600 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-pointer group shrink-0">
+        <!-- LOGOUT BUTTON -->
+        <button id="logoutBtn" title="Sign Out" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-red-50 hover:border-red-100 hover:text-red-500 border border-white transition-all duration-500 text-slate-600 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-pointer group shrink-0">
             <i data-lucide="log-out" class="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1"></i>
             <span class="font-medium text-sm tracking-wide">Sign Out</span>
         </button>
@@ -235,26 +237,41 @@
     lucide.createIcons();
     const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
 
-    // --- Vertical Expandable Menu Logic ---
+    // --- Vertical Expandable Menu Logic with Icon Swap ---
     const toggleMenuBtn = document.getElementById('toggleMenuBtn');
     const expandedMenu = document.getElementById('expandedMenu');
-    const toggleIcon = document.getElementById('toggleIcon');
+    const iconOpen = document.getElementById('iconOpen');
+    const iconClose = document.getElementById('iconClose');
     let isMenuExpanded = false;
 
     toggleMenuBtn.addEventListener('click', () => {
         isMenuExpanded = !isMenuExpanded;
         if (isMenuExpanded) {
-            // Show Pop-up
+            // Show Pop-up Menu
             expandedMenu.classList.remove('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
             expandedMenu.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
-            toggleIcon.classList.remove('rotate-0');
-            toggleIcon.classList.add('rotate-45');
+            
+            // Swap to Close Icon
+            iconOpen.classList.replace('scale-100', 'scale-50');
+            iconOpen.classList.replace('rotate-0', '-rotate-90');
+            iconOpen.classList.replace('opacity-100', 'opacity-0');
+            
+            iconClose.classList.replace('scale-50', 'scale-100');
+            iconClose.classList.replace('rotate-90', 'rotate-0');
+            iconClose.classList.replace('opacity-0', 'opacity-100');
         } else {
-            // Hide Pop-up
+            // Hide Pop-up Menu
             expandedMenu.classList.add('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
             expandedMenu.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
-            toggleIcon.classList.remove('rotate-45');
-            toggleIcon.classList.add('rotate-0');
+            
+            // Swap back to Menu/Grid Icon
+            iconOpen.classList.replace('scale-50', 'scale-100');
+            iconOpen.classList.replace('-rotate-90', 'rotate-0');
+            iconOpen.classList.replace('opacity-0', 'opacity-100');
+            
+            iconClose.classList.replace('scale-100', 'scale-50');
+            iconClose.classList.replace('rotate-0', 'rotate-90');
+            iconClose.classList.replace('opacity-100', 'opacity-0');
         }
     });
 
