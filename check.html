@@ -57,9 +57,17 @@
     <div class="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center gap-2">
         <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-2xl shadow-sm border border-blue-200">👵</div>
-        <h1 class="text-xl font-bold text-slate-800 tracking-tight">ป้าแป๋วแจกงาน</h1>
+        <h1 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">ป้าแป๋วแจกงาน</h1>
       </div>
-      <div class="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full border border-slate-200" id="current-date">-</div>
+      
+      <!-- เพิ่มปุ่ม Workspace ตรงนี้ คู่กับวันที่ -->
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:block text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200" id="current-date">-</div>
+        <a href="https://marketingppac-create.github.io/ppacpasathai/ppacworkspace.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] sm:text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 rounded-full hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+          Workspace
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
     </div>
 
     <div class="max-w-3xl mx-auto px-2">
@@ -92,9 +100,27 @@
         <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> เปิดงานใหม่</h3>
         <div class="space-y-4">
           <div><label class="block text-xs font-bold text-slate-500 mb-1">ผู้สร้าง</label><select id="fd-user" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100"></select></div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">ประเภทงาน</label>
+            <div class="flex gap-4 p-2 bg-slate-50 border border-slate-200 rounded-xl">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="fd-task-type" value="บุคคล" class="w-4 h-4 text-blue-600 focus:ring-blue-500" checked>
+                <span class="text-sm font-medium text-slate-700">👤 บุคคล</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="fd-task-type" value="องค์กร" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                <span class="text-sm font-medium text-slate-700">🏢 องค์กร</span>
+              </label>
+            </div>
+          </div>
           <div class="grid grid-cols-2 gap-3">
              <div><label class="block text-xs font-bold text-slate-500 mb-1">ID ลูกค้า</label><input id="fd-customer-id" type="text" placeholder="เช่น C-001" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100"></div>
              <div><label class="block text-xs font-bold text-slate-500 mb-1">ชื่อลูกค้า</label><input id="fd-customer-name" type="text" placeholder="คุณลูกค้า..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100"></div>
+          </div>
+          <!-- เพิ่มฟิลด์เลือกวันที่ตรงนี้ -->
+          <div>
+             <label class="block text-xs font-bold text-rose-500 mb-1">📅 วันที่ต้องการงาน (Due Date)</label>
+             <input id="fd-due-date" type="date" class="w-full p-3 bg-rose-50 border border-rose-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-300 text-rose-800 font-medium">
           </div>
           <button onclick="handleCreateTask()" id="btn-create" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md active:scale-[0.98]">สร้างงาน</button>
         </div>
@@ -146,8 +172,8 @@
 
   <script>
     // 🔴 🔴 🔴 สำหรับการใช้งานบน GITHUB PAGES 🔴 🔴 🔴
-    // ฝัง URL Web App ของคุณลงไปแล้วเรียบร้อยครับ
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyyCZGljMoVixAgx2cvmNFFhr3ARbeoqjcgRAOhfigykdQchlYMCyg7X27KEt5rPzH-Ew/exec"; 
+    // นำ URL Web App ของ Google Apps Script ที่ Deploy เสร็จแล้ว (ต้องตั้งค่า Execute as: Me, Access: Anyone) มาใส่ที่ตัวแปรด้านล่างนี้
+    const GAS_URL = ""; 
 
     if (typeof google === 'undefined') {
       window.google = { 
@@ -272,12 +298,30 @@
     }
 
     function handleCreateTask(){
-      const btn=$('#btn-create'), d={createdBy:$('#fd-user').value, customerId:$('#fd-customer-id').value.trim(), customerName:$('#fd-customer-name').value.trim()};
-      if(!d.createdBy||!d.customerId||!d.customerName){showToast('กรอกข้อมูลให้ครบ',true);return;}
-      btn.disabled=true; btn.textContent='...';
-      google.script.run.withSuccessHandler(r=>{
+      const btn=$('#btn-create');
+      const d={
+          createdBy: $('#fd-user').value, 
+          taskType: document.querySelector('input[name="fd-task-type"]:checked')?.value || "บุคคล",
+          customerId: $('#fd-customer-id').value.trim(), 
+          customerName: $('#fd-customer-name').value.trim(),
+          dueDate: $('#fd-due-date').value // เก็บค่า Due Date ไปด้วย
+      };
+      
+      if(!d.createdBy||!d.customerId||!d.customerName||!d.dueDate){
+          showToast('กรอกข้อมูลให้ครบ (รวมถึงวันที่ด้วย)',true);
+          return;
+      }
+      
+        google.script.run.withSuccessHandler(r=>{
         btn.disabled=false; btn.textContent='สร้างงาน';
-        if(r.status==='success'){showToast('สำเร็จ'); $('#fd-customer-id').value=''; $('#fd-customer-name').value=''; fetchDashboard(); updateBadges();}
+        if(r.status==='success'){
+            showToast('สำเร็จ'); 
+            $('#fd-customer-id').value=''; 
+            $('#fd-customer-name').value=''; 
+            $('#fd-due-date').value=''; // เคลียร์ช่องวันที่ด้วย
+            document.querySelector('input[name="fd-task-type"][value="บุคคล"]').checked = true; // รีเซ็ตประเภทงานกลับเป็นบุคคล
+            fetchDashboard(); updateBadges();
+        }
         else showToast(r.message,true);
       }).createTask(d);
     }
@@ -315,15 +359,44 @@
 
     function createCard(t,cls){
       const el=document.createElement('div'); el.className=`task-card ${cls}`;
-      const sla=getSlaIcon(t), sub=getSubInfo(t,cls);
+      const sub=getSubInfo(t,cls);
       
       let extraHint = '';
       if(cls.includes('st-deliv')) extraHint = `<div class="text-[10px] text-blue-500 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full border border-blue-100">📄 คลิกดูประวัติ</div>`;
 
+      // 🔴 ป้ายกำกับประเภทงาน (บุคคล / องค์กร)
+      let typeBadge = t.taskType === "องค์กร" 
+        ? `<span class="text-[10px] bg-purple-100 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded font-bold ml-1 align-middle">🏢 องค์กร</span>` 
+        : `<span class="text-[10px] bg-sky-100 text-sky-700 border border-sky-200 px-1.5 py-0.5 rounded font-bold ml-1 align-middle">👤 บุคคล</span>`;
+
+      // 🔴 สร้างชื่อแบบรวม ID ไว้ข้างหน้า และต่อด้วยป้ายประเภทงาน
+      const combinedName = `<span class="text-blue-700 mr-1.5 font-black">[${t.customerId}]</span>${t.customerName} ${typeBadge}`;
+
+      // 🔴 จัดการแสดงผลป้าย นับถอยหลัง (Countdown Badge)
+      let countdownHtml = '';
+      if (t.daysRemaining !== null && t.status !== 'Completed' && t.status !== 'Delivered') {
+          if (t.daysRemaining < 0) {
+              countdownHtml = `<div class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full animate-pulse shadow-sm border border-red-700">⚠️ เลยกำหนด ${Math.abs(t.daysRemaining)} วัน</div>`;
+          } else if (t.daysRemaining === 0) {
+              countdownHtml = `<div class="bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm border border-rose-600">🔥 ด่วน ส่งวันนี้</div>`;
+          } else if (t.daysRemaining <= 2) {
+              countdownHtml = `<div class="bg-amber-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm border border-amber-600">⏳ เหลือ ${t.daysRemaining} วัน</div>`;
+          } else {
+              countdownHtml = `<div class="bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm border border-emerald-600">📅 เหลือ ${t.daysRemaining} วัน</div>`;
+          }
+      } else if (t.status === 'Completed' || t.status === 'Delivered') {
+          countdownHtml = `<div class="bg-slate-200 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-300">✅ เสร็จแล้ว</div>`;
+      }
+
       el.innerHTML=`<div class="status-line"></div>
-        <div class="flex justify-between items-start mb-1 pl-2">
-          <div><h4 class="font-bold text-slate-800 text-sm leading-tight mb-1">${t.customerName}</h4><div class="text-xs font-mono text-slate-400 bg-slate-100 inline-block px-1 rounded">${t.customerId}</div></div>
-          <div class="flex flex-col items-end gap-1"><div class="text-lg">${sla}</div>${extraHint}</div>
+        <div class="flex justify-between items-start mb-2 pl-2">
+          <div class="flex-1 pr-2">
+              <h4 class="font-bold text-slate-800 text-sm leading-tight mb-1 break-words">${combinedName}</h4>
+          </div>
+          <div class="flex flex-col items-end gap-1 flex-shrink-0">
+              ${countdownHtml}
+              ${extraHint}
+          </div>
         </div>
         <div class="text-xs text-slate-500 mt-2 border-t border-slate-100 pt-2 pl-2 flex flex-wrap gap-2 items-center">${sub}</div>`;
       
@@ -331,16 +404,15 @@
       return el;
     }
 
-    function getSlaIcon(t){ if(t.status==='Delivered')return '📦'; if(t.status==='Completed'||t.isCompleted)return '✅'; const d=+t.slaDays||0; return d>=3?'🔥':(d===2?'⚠️':''); }
     function getSubInfo(t,c){
-      if(c.includes('st-new'))return `<span>👤 ${t.createdBy}</span><span class="text-slate-300">|</span><span>📅 ${t.creationDate.split(' ')[0]}</span>`;
+      if(c.includes('st-new'))return `<span>👤 ${t.createdBy}</span><span class="text-slate-300">|</span><span>เปิดบิล: ${t.creationDate.split(' ')[0]}</span>`;
       if(c.includes('st-pend'))return `<span>ผู้ช่วย: ${t.assignedAssistant}</span>`;
       if(c.includes('st-comp'))return `<span>นวค: ${t.assignedAnalyst}</span>`;
-      if(c.includes('st-deliv'))return `<span>ส่ง: ${t.deliveredDate.split(' ')[0]}</span>`;
+      if(c.includes('st-deliv'))return `<span>ส่งลูกค้า: ${t.deliveredDate.split(' ')[0]}</span>`;
       return `<span>${t.assignedAssistant||'-'}</span>`;
     }
 
-    function openModal(t,b,f){ $('#modal-title').textContent=t; $('#modal-body').innerHTML=b; $('#modal-footer').innerHTML=f; $('#modal-overlay').classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    function openModal(t,b,f){ $('#modal-title').innerHTML=t; $('#modal-body').innerHTML=b; $('#modal-footer').innerHTML=f; $('#modal-overlay').classList.remove('hidden'); document.body.style.overflow='hidden'; }
     function closeModal(){ $('#modal-overlay').classList.add('hidden'); document.body.style.overflow=''; }
     
     // ฟังก์ชันเปิด-ปิด หน้าต่างยืนยัน
@@ -368,13 +440,14 @@
 
     function openActionModal(t,cls){
       const auditBtn=`<button onclick="viewAudit('${t.taskId}')" class="text-sm text-blue-500 font-bold underline mb-3 block text-right">ดูประวัติทั้งหมด</button>`;
+      const displayTitle = `<span class="text-blue-600 font-black">[${t.customerId}]</span> ${t.customerName}`;
       
       if(cls.includes('st-deliv')){ viewAudit(t.taskId); return; } 
 
       if(cls.includes('st-new')){
         const b=`${auditBtn}${getDD('sel-assist',allUsers.assistants,t.assignedAssistant,'เลือกผู้ช่วย')}<div class="bg-blue-50 text-blue-700 text-sm p-3 rounded-lg border border-blue-100">กดเริ่มงาน สถานะจะเปลี่ยนเป็น <b>In Progress</b></div>`;
         const f=`<button onclick="doAction('claim',${t.rowNum})" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-md text-base">เริ่มงาน</button>`;
-        openModal(`งาน: ${t.customerName}`,b,f);
+        openModal(`เริ่มงาน: ${displayTitle}`,b,f);
       }else if(cls.includes('st-prog')||cls.includes('st-corr')){
         let ex=''; 
         if(cls.includes('st-corr')){ 
@@ -385,7 +458,7 @@
         }
         const b=`${auditBtn}${ex}<div class="mb-3"><label class="text-sm font-bold text-slate-500 mb-1 block">ผู้ช่วย</label><div class="p-3 bg-slate-100 rounded-lg text-base text-slate-800 font-bold">${t.assignedAssistant}</div></div>${getDD('sel-analyst',allUsers.analysts,t.assignedAnalyst,'ส่งต่อให้ นวค.')}`;
         const f=`<button onclick="doAction('sendToAnalyst',${t.rowNum})" class="w-full py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 shadow-md text-base">ส่งตรวจ</button>`;
-        openModal(`งาน: ${t.customerName}`,b,f);
+        openModal(`ส่งตรวจ: ${displayTitle}`,b,f);
       }else if(cls.includes('st-pend')){
         
         // --- ฟอร์มสั่งแก้ไขชุดใหม่ (Textarea แบบเอา Scrollbar ออก) ---
@@ -449,18 +522,17 @@
             <div class="bg-slate-50/50 p-2 rounded-xl">${chksHTML}</div>
           </div>`;
           
-        // 🔴 ปรับปรุง Layout ปุ่มกด: สั่งแก้อยู่บน (ปุ่มใหญ่ สีแดง) ตรวจผ่านอยู่ล่าง
         const f=`<div class="flex flex-col gap-3">
           <button onclick="doAction('requestCorrection',${t.rowNum})" class="w-full py-4 bg-rose-100 border-2 border-rose-300 text-rose-800 rounded-xl font-bold hover:bg-rose-200 text-lg shadow-sm transition-all">❌ กดเพื่อส่งกลับไปแก้ไข</button>
           <button onclick="confirmCompleteTask(${t.rowNum})" class="w-full py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 shadow-md text-base mt-2">✅ ตรวจผ่าน (เสร็จสิ้น)</button>
         </div>`;
         
-        openModal(`ตรวจงาน: ${t.customerName}`,b,f);
+        openModal(`ตรวจงาน: ${displayTitle}`,b,f);
 
       }else if(cls.includes('st-comp')){
         const b=`${auditBtn}${getDD('sel-fd-deliver',allUsers.frontDesk,t.createdBy,'ใครเป็นคนส่งลูกค้า?')}<div class="text-sm text-slate-500 bg-emerald-50 p-4 rounded-lg border border-emerald-100 mt-2">งานนี้ผ่านการตรวจสอบแล้ว โดย <b>${t.assignedAnalyst}</b></div>`;
         const f=`<button onclick="doAction('deliver',${t.rowNum})" class="w-full py-3.5 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-900 shadow-md text-base">บันทึกส่งลูกค้า</button>`;
-        openModal(`ส่งงาน: ${t.customerName}`,b,f);
+        openModal(`ส่งงาน: ${displayTitle}`,b,f);
       }
     }
 
@@ -476,7 +548,7 @@
         document.querySelectorAll('.correction-check').forEach(chk => {
           if(chk.checked) {
             const txt = document.getElementById(chk.dataset.target).value.trim();
-            p.correctionPages.push(`▶️ ${chk.value}${txt ? \`\n   ↳ ${txt}\` : ''}`); // จัดฟอร์แมตให้อ่านง่าย
+            p.correctionPages.push(`▶️ ${chk.value}${txt ? `\n   ↳ ${txt}` : ''}`); // จัดฟอร์แมตให้อ่านง่าย
           }
         });
         if(!p.correctionPages.length){showToast('กรุณาเลือกหัวข้อที่ต้องแก้',true);return;} 
