@@ -176,29 +176,41 @@
     const GAS_URL = ""; 
 
     if (typeof google === 'undefined') {
+      const runnerState = { successCb: null, failureCb: null };
+      
       window.google = { 
         script: { 
           run: new Proxy({}, {
             get: function(target, prop) {
+              
+              // 1. ดักจับการผูก Callback แล้วส่งตัวเองกลับไปเพื่อทำ Chain Function ต่อได้
+              if (prop === 'withSuccessHandler') {
+                return function(cb) { runnerState.successCb = cb; return window.google.script.run; };
+              }
+              if (prop === 'withFailureHandler') {
+                return function(cb) { runnerState.failureCb = cb; return window.google.script.run; };
+              }
+
+              // 2. เมื่อมีการเรียกใช้ Action ของ GAS Server (เช่น .getUserLists, .getTasks)
               return function(...args) {
-                let successCb = null;
-                let failureCb = null;
+                // ดึง Callback ที่บันทึกไว้ออกมาใช้
+                const sCb = runnerState.successCb;
+                const fCb = runnerState.failureCb;
                 
-                const chain = {
-                  withSuccessHandler: function(cb) { successCb = cb; return chain; },
-                  withFailureHandler: function(cb) { failureCb = cb; return chain; }
-                };
+                // เคลียร์ค่าคืนเพื่อให้พร้อมสำหรับการเรียก API ครั้งต่อไป
+                runnerState.successCb = null;
+                runnerState.failureCb = null;
 
                 setTimeout(async () => {
                   try {
                     if (!GAS_URL || GAS_URL === "") {
-                      console.warn("⚠️ ยังไม่ได้ใส่ GAS_URL ใช้งานแบบ Mock Data ไปก่อน");
+                      console.warn("⚠️ ยังไม่ได้ใส่ GAS_URL ใช้งานแบบ Mock Data ไปก่อนสำหรับ: " + prop);
                       const mockDataMap = {
                         getUserLists: {frontDesk:['จำลอง 1'], assistants:['จำลอง 2'], analysts:['จำลอง 3']},
                         getMonthlySummary: {created:{total:0,InProgress:0,PendingAnalyst:0,Completed:0},completedInMonth:0},
                         getAssistantBadgeCount: 0, getAnalystPendingCount: 0, getCompletedPendingDeliveryCount: 0, getTasks: [], getAuditLog: []
                       };
-                      if(successCb) successCb(prop in mockDataMap ? mockDataMap[prop] : {status:'success', message:'จำลองการทำงานสำเร็จ (รอใส่ URL)'});
+                      if(sCb) sCb(prop in mockDataMap ? mockDataMap[prop] : {status:'success', message:'จำลองการทำงานสำเร็จ (รอใส่ URL)'});
                       return;
                     }
 
@@ -211,23 +223,19 @@
                     
                     const result = await response.json();
                     
-                    if (result.status === 'success' && successCb) {
-                      // ส่ง Data เพียวๆ กลับไปให้ Frontend ทำงานต่อได้เลย (ไม่ต้องแก้โค้ด Frontend ที่เหลือ)
-                      successCb(result.data);
-                    } else if (result.status === 'error' && failureCb) {
-                      failureCb(result.message);
-                    } else if (successCb) {
-                       // เผื่อ API บางตัวส่งรูปแบบอื่นมา
-                       successCb(result.data || result); 
+                    if (result.status === 'success' && sCb) {
+                      sCb(result.data);
+                    } else if (result.status === 'error' && fCb) {
+                      fCb(result.message);
+                    } else if (sCb) {
+                       sCb(result.data || result); 
                     }
                   } catch(e) {
-                    if (failureCb) failureCb(e);
+                    if (fCb) fCb(e);
                     else console.error("GAS API Error:", e);
                   }
                 }, 0);
-
-                return chain;
-              }
+              };
             }
           })
         }
