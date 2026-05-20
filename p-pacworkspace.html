@@ -1,443 +1,443 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>P-PAC WORKSPACE</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>P-PAC WORKSPACE</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <style>
-    /* Premium Typography & Smooth Scrolling */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
-    
-    body {
-      font-family: 'Outfit', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+  <style>
+    /* Premium Typography & Smooth Scrolling */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-    /* Refined Scrollbar */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    /* Refined Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* Custom Input Auto-fill style to match luxury theme */
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active{
-        -webkit-box-shadow: 0 0 0 30px white inset !important;
-        -webkit-text-fill-color: #334155 !important;
-        transition: background-color 5000s ease-in-out 0s;
-    }
-  </style>
+    /* Custom Input Auto-fill style to match luxury theme */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active{
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+        -webkit-text-fill-color: #334155 !important;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+  </style>
 </head>
 <body class="bg-[#FAFAFA] text-slate-700 m-0 p-0 overflow-hidden selection:bg-slate-200 selection:text-slate-900">
 
-  <!-- Ambient Background Glows for Soft-Luxury Feel -->
-  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-    <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-50/60 blur-[120px]"></div>
-    <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-slate-100/80 blur-[150px]"></div>
-  </div>
+  <!-- Ambient Background Glows for Soft-Luxury Feel -->
+  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+    <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-50/60 blur-[120px]"></div>
+    <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-slate-100/80 blur-[150px]"></div>
+  </div>
 
-  <!-- LOGIN VIEW -->
-  <div id="loginView" class="min-h-screen flex items-center justify-center p-6">
-    <div class="w-full max-w-[28rem] bg-white/70 backdrop-blur-3xl border border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] rounded-[2.5rem] p-10 sm:p-14 relative overflow-hidden transition-all duration-700 hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] hover:bg-white/90">
-        
-        <!-- Minimalist decorative dot instead of a full top line -->
-        <div class="absolute top-8 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="min-h-screen flex items-center justify-center p-6">
+    <div class="w-full max-w-[28rem] bg-white/70 backdrop-blur-3xl border border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] rounded-[2.5rem] p-10 sm:p-14 relative overflow-hidden transition-all duration-700 hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] hover:bg-white/90">
+        
+        <!-- Minimalist decorative dot instead of a full top line -->
+        <div class="absolute top-8 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></div>
 
-        <!-- Header / Logo Area -->
-        <div class="text-center mt-4 mb-12">
-          <h2 id="secretTriggerLogin" class="text-3xl font-light tracking-[0.3em] text-slate-800 uppercase mb-3 cursor-default select-none transition-all hover:opacity-70">P-PAC</h2>
-          <h3 class="text-[10px] font-medium tracking-[0.35em] text-slate-400 uppercase">Potential Analysis Center</h3>
-        </div>
+        <!-- Header / Logo Area -->
+        <div class="text-center mt-4 mb-12">
+          <h2 id="secretTriggerLogin" class="text-3xl font-light tracking-[0.3em] text-slate-800 uppercase mb-3 cursor-default select-none transition-all hover:opacity-70">P-PAC</h2>
+          <h3 class="text-[10px] font-medium tracking-[0.35em] text-slate-400 uppercase">Potential Analysis Center</h3>
+        </div>
 
-        <form id="loginForm" class="space-y-6">
-          <!-- Username Input -->
-          <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors duration-300 group-focus-within:text-slate-800 text-slate-400">
-              <i data-lucide="user" class="w-4 h-4"></i>
-            </div>
-            <input type="text" id="username" placeholder="Username" class="w-full pl-12 pr-5 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl text-sm focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 focus:outline-none transition-all duration-300 placeholder:text-slate-300 placeholder:font-light">
-          </div>
-          
-          <!-- Password Input -->
-          <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors duration-300 group-focus-within:text-slate-800 text-slate-400">
-              <i data-lucide="lock" class="w-4 h-4"></i>
-            </div>
-            <input type="password" id="password" placeholder="Password" class="w-full pl-12 pr-5 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl text-sm focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 focus:outline-none transition-all duration-300 placeholder:text-slate-300 placeholder:font-light">
-          </div>
+        <form id="loginForm" class="space-y-6">
+          <!-- Username Input -->
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors duration-300 group-focus-within:text-slate-800 text-slate-400">
+              <i data-lucide="user" class="w-4 h-4"></i>
+            </div>
+            <input type="text" id="username" placeholder="Username" class="w-full pl-12 pr-5 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl text-sm focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 focus:outline-none transition-all duration-300 placeholder:text-slate-300 placeholder:font-light">
+          </div>
+          
+          <!-- Password Input -->
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors duration-300 group-focus-within:text-slate-800 text-slate-400">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </div>
+            <input type="password" id="password" placeholder="Password" class="w-full pl-12 pr-5 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl text-sm focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 focus:outline-none transition-all duration-300 placeholder:text-slate-300 placeholder:font-light">
+          </div>
 
-          <!-- Error Message -->
-          <div id="errorMsg" class="hidden items-center justify-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 py-3 px-4 rounded-xl border border-red-100">
-            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
-            <span id="errorText" class="font-medium"></span>
-          </div>
+          <!-- Error Message -->
+          <div id="errorMsg" class="hidden items-center justify-center gap-2 text-red-500 text-xs mt-2 bg-red-50/50 py-3 px-4 rounded-xl border border-red-100">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+            <span id="errorText" class="font-medium"></span>
+          </div>
 
-          <!-- Submit Button -->
-          <button type="submit" id="submitBtn" class="w-full mt-8 bg-slate-900 hover:bg-slate-800 text-white font-medium tracking-[0.1em] text-sm py-4 rounded-2xl transition-all duration-500 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.3)] hover:shadow-[0_15px_35px_-10px_rgba(15,23,42,0.4)] hover:-translate-y-0.5 flex justify-center items-center gap-3">
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            <span>SIGN IN</span>
-          </button>
-        </form>
+          <!-- Submit Button -->
+          <button type="submit" id="submitBtn" class="w-full mt-8 bg-slate-900 hover:bg-slate-800 text-white font-medium tracking-[0.1em] text-sm py-4 rounded-2xl transition-all duration-500 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.3)] hover:shadow-[0_15px_35px_-10px_rgba(15,23,42,0.4)] hover:-translate-y-0.5 flex justify-center items-center gap-3">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <span>SIGN IN</span>
+          </button>
+        </form>
 
-        <div class="mt-8 text-center">
-            <p class="text-[10px] text-slate-300 tracking-wider">SECURE WORKSPACE</p>
-        </div>
-    </div>
-  </div>
+        <div class="mt-8 text-center">
+            <p class="text-[10px] text-slate-300 tracking-wider">SECURE WORKSPACE</p>
+        </div>
+    </div>
+  </div>
 
-  <!-- DASHBOARD VIEW -->
-  <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#FAFAFA]">
-    
-    <!-- Premium Floating Menu Bottom Right -->
-    <div style="z-index: 1000000;" class="fixed bottom-8 right-8 flex flex-col items-end gap-4">
-      
-      <!-- User Badge -->
-      <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl border border-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-default transition-all duration-500 hover:bg-white">
-        <div class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-        </div>
-        <span class="font-light text-sm text-slate-500 tracking-wide">Welcome, <span id="displayUsername" class="font-medium text-slate-800"></span></span>
-      </div>
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboardView" class="hidden w-full h-screen relative overflow-hidden bg-[#FAFAFA]">
+    
+    <!-- Premium Floating Menu Bottom Right -->
+    <div style="z-index: 1000000;" class="fixed bottom-8 right-8 flex flex-col items-end gap-4">
+      
+      <!-- User Badge -->
+      <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl border border-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-default transition-all duration-500 hover:bg-white">
+        <div class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </div>
+        <span class="font-light text-sm text-slate-500 tracking-wide">Welcome, <span id="displayUsername" class="font-medium text-slate-800"></span></span>
+      </div>
 
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-3">
-        
-        <!-- Toggle Button & Vertical Pop-up Menu Container -->
-        <div class="relative flex items-center">
-            
-            <!-- Expanded Menu (Vertical Pop-up) -->
-            <div id="expandedMenu" class="absolute bottom-[calc(100%+1rem)] right-0 flex flex-col items-end gap-3 transition-all duration-500 ease-out opacity-0 translate-y-6 scale-95 pointer-events-none origin-bottom-right z-50">
-                
-                <!-- 1. ลักษณะบุคลิกภาพ(นก) -->
-                <a href="https://marketingppac-create.github.io/ppacpasathai/bird.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
-                    <span class="font-medium text-sm tracking-wide">ลักษณะบุคลิกภาพ(นก)</span>
-                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="thumbs-up" class="w-4 h-4"></i></div>
-                </a>
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Toggle Button & Vertical Pop-up Menu Container -->
+        <div class="relative flex items-center">
+            
+            <!-- Expanded Menu (Vertical Pop-up) -->
+            <div id="expandedMenu" class="absolute bottom-[calc(100%+1rem)] right-0 flex flex-col items-end gap-3 transition-all duration-500 ease-out opacity-0 translate-y-6 scale-95 pointer-events-none origin-bottom-right z-50">
+                
+                <!-- 1. ลักษณะบุคลิกภาพ(นก) -->
+                <a href="https://marketingppac-create.github.io/ppacpasathai/bird.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">ลักษณะบุคลิกภาพ(นก)</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="thumbs-up" class="w-4 h-4"></i></div>
+                </a>
 
-                <!-- 2. ตารางศักยภาพ -->
-                <a href="https://marketingppac-create.github.io/ppacpasathai/10.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
-                    <span class="font-medium text-sm tracking-wide">ตารางศักยภาพ</span>
-                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="layout-template" class="w-4 h-4"></i></div>
-                </a>
+                <!-- 2. ตารางศักยภาพ -->
+                <a href="https://marketingppac-create.github.io/ppacpasathai/10.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">ตารางศักยภาพ</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="layout-template" class="w-4 h-4"></i></div>
+                </a>
 
-                <!-- 3. การทำงานของสมองและ Learning Style -->
-                <a href="https://marketingppac-create.github.io/ppacpasathai/brain.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
-                    <span class="font-medium text-sm tracking-wide">การทำงานของสมองและ Learning Style/Type</span>
-                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="zap" class="w-4 h-4"></i></div>
-                </a>
+                <!-- 3. การทำงานของสมองและ Learning Style -->
+                <a href="https://marketingppac-create.github.io/ppacpasathai/brain.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">การทำงานของสมองและ Learning Style/Type</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                </a>
 
-                <!-- 4. สรุปศักยภาพ -->
-                <a href="https://marketingppac-create.github.io/ppacpasathai/career.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
-                    <span class="font-medium text-sm tracking-wide">สรุปศักยภาพ</span>
-                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="briefcase" class="w-4 h-4"></i></div>
-                </a>
+                <!-- 4. สรุปศักยภาพ -->
+                <a href="https://marketingppac-create.github.io/ppacpasathai/career.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <span class="font-medium text-sm tracking-wide">สรุปศักยภาพ</span>
+                    <div class="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-50 transition-colors duration-300 border border-slate-100"><i data-lucide="briefcase" class="w-4 h-4"></i></div>
+                </a>
 
-                <!-- 5. Corporate: จุดแข็ง จุดอ่อน... -->
-                <a href="https://marketingppac-create.github.io/ppacpasathai/weakness.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline group max-w-sm sm:max-w-md text-right">
-                    <div class="flex flex-col items-end">
-                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-0.5">Corporate</span>
-                        <span class="font-medium text-sm tracking-wide truncate max-w-[14rem] sm:max-w-[20rem]">จุดแข็ง จุดอ่อน กลุ่มงาน รูปแบบการพัฒนา และหลักสูตรการฝึกอบรม</span>
-                    </div>
-                    <div class="w-9 h-9 shrink-0 rounded-xl bg-red-50/50 flex items-center justify-center text-red-600 group-hover:bg-red-50 transition-colors duration-300 border border-red-50"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
-                </a>
+                <!-- 5. Corporate: จุดแข็ง จุดอ่อน... -->
+                <a href="https://marketingppac-create.github.io/ppacpasathai/weakness.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline group max-w-sm sm:max-w-md text-right">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-0.5">Corporate</span>
+                        <span class="font-medium text-sm tracking-wide truncate max-w-[14rem] sm:max-w-[20rem]">จุดแข็ง จุดอ่อน กลุ่มงาน รูปแบบการพัฒนา และหลักสูตรการฝึกอบรม</span>
+                    </div>
+                    <div class="w-9 h-9 shrink-0 rounded-xl bg-red-50/50 flex items-center justify-center text-red-600 group-hover:bg-red-50 transition-colors duration-300 border border-red-50"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                </a>
 
-                <!-- 6. Corporate: ปก -->
-                <a href="https://marketingppac-create.github.io/ppacpasathai/covercopt.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
-                    <div class="flex flex-col items-end">
-                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-0.5">Corporate</span>
-                        <span class="font-medium text-sm tracking-wide">ปก Corporate</span>
-                    </div>
-                    <div class="w-9 h-9 rounded-xl bg-red-50/50 flex items-center justify-center text-red-600 group-hover:bg-red-50 transition-colors duration-300 border border-red-50"><i data-lucide="building-2" class="w-4 h-4"></i></div>
-                </a>
-            </div>
+                <!-- 6. Corporate: ปก -->
+                <a href="https://marketingppac-create.github.io/ppacpasathai/covercopt.html" target="workspaceFrame" class="menu-link flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-xl hover:bg-white border border-white transition-all duration-300 text-slate-700 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] hover:-translate-x-1 cursor-pointer no-underline whitespace-nowrap group">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-0.5">Corporate</span>
+                        <span class="font-medium text-sm tracking-wide">ปก Corporate</span>
+                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-red-50/50 flex items-center justify-center text-red-600 group-hover:bg-red-50 transition-colors duration-300 border border-red-50"><i data-lucide="building-2" class="w-4 h-4"></i></div>
+                </a>
+            </div>
 
-            <!-- Toggle Expand Button -->
-            <button id="toggleMenuBtn" title="Menu" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer shrink-0 z-[51] relative">
-                <i data-lucide="layout-grid" id="iconOpen" class="w-5 h-5 absolute transition-all duration-500 scale-100 rotate-0 opacity-100"></i>
-                <i data-lucide="x" id="iconClose" class="w-5 h-5 absolute transition-all duration-500 scale-50 rotate-90 opacity-0"></i>
-            </button>
-        </div>
+            <!-- Toggle Expand Button -->
+            <button id="toggleMenuBtn" title="Menu" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer shrink-0 z-[51] relative">
+                <i data-lucide="layout-grid" id="iconOpen" class="w-5 h-5 absolute transition-all duration-500 scale-100 rotate-0 opacity-100"></i>
+                <i data-lucide="x" id="iconClose" class="w-5 h-5 absolute transition-all duration-500 scale-50 rotate-90 opacity-0"></i>
+            </button>
+        </div>
 
-        <!-- สร้างงานใหม่/ส่งตรวจ BUTTON -->
-        <a href="https://script.google.com/macros/s/AKfycbzGSgk3cK2zb-bznJ2zZ7O42pAQD0MXATHd16GDwYYKYlRWaM9uNXfD8Cswx5HqZ2D_4Q/exec" target="workspaceFrame" title="สร้างงานใหม่/ส่งตรวจ" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer no-underline group shrink-0">
-            <i data-lucide="file-text" class="w-5 h-5 transition-transform duration-500 group-hover:scale-110"></i>
-        </a>
+        <!-- WORKSPACE BUTTON (Changed to Icon) -->
+        <a href="https://marketingppac-create.github.io/ppacpasathai/p-pacworkspace.html" target="workspaceFrame" title="Workspace" class="flex items-center justify-center w-[3.25rem] h-[3.25rem] rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-slate-900 border border-white transition-all duration-500 text-slate-600 hover:text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-xl cursor-pointer no-underline group shrink-0">
+            <i data-lucide="file-text" class="w-5 h-5 transition-transform duration-500 group-hover:scale-110"></i>
+        </a>
 
-        <!-- LOGOUT BUTTON -->
-        <button id="logoutBtn" title="Sign Out" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-red-50 hover:border-red-100 hover:text-red-500 border border-white transition-all duration-500 text-slate-600 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-pointer group shrink-0">
-            <i data-lucide="log-out" class="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1"></i>
-            <span class="font-medium text-sm tracking-wide">Sign Out</span>
-        </button>
-      </div>
+        <!-- LOGOUT BUTTON -->
+        <button id="logoutBtn" title="Sign Out" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-xl hover:bg-red-50 hover:border-red-100 hover:text-red-500 border border-white transition-all duration-500 text-slate-600 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-pointer group shrink-0">
+            <i data-lucide="log-out" class="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1"></i>
+            <span class="font-medium text-sm tracking-wide">Sign Out</span>
+        </button>
+      </div>
 
-    </div>
+    </div>
 
-    <!-- Iframe Content (Updated src URL) -->
-    <iframe 
-      name="workspaceFrame"
-      id="workspaceFrame"
-      src="https://script.google.com/macros/s/AKfycbzGSgk3cK2zb-bznJ2zZ7O42pAQD0MXATHd16GDwYYKYlRWaM9uNXfD8Cswx5HqZ2D_4Q/exec" 
-      style="position: fixed; top: 0; bottom: 0; right: 0; width: 100%; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999; height: 100%; border-radius: 1rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);"
-      title="P-PAC WORKSPACE">
-    </iframe>
-  </div>
+    <!-- Iframe Content (Added name="workspaceFrame") -->
+    <iframe 
+      name="workspaceFrame"
+      id="workspaceFrame"
+      src="https://script.google.com/macros/s/AKfycby_PIFyhk7fIqLSGLaT6N05oAgTwdFD-5WM4ruvutVnXlAfBjJdAWOcQTmAuhQ1Wm5Clg/exec" 
+      style="position: fixed; top: 0; bottom: 0; right: 0; width: 100%; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999; height: 100%; border-radius: 1rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);"
+      title="P-PAC WORKSPACE">
+    </iframe>
+  </div>
 
-  <!-- ADMIN MODAL -->
-  <div id="adminModal" class="hidden fixed inset-0 z-[1000005] bg-slate-900/20 backdrop-blur-md flex items-center justify-center p-6 transition-all duration-500">
-    <div class="w-full max-w-2xl bg-white/95 backdrop-blur-3xl border border-white shadow-[0_30px_80px_-20px_rgba(0,0,0,0.15)] rounded-[2.5rem] p-10 sm:p-12 relative">
-      
-      <div class="flex justify-between items-center mb-10">
-        <h2 class="text-xl font-medium text-slate-800 flex items-center gap-3 tracking-wide">
-          <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-100">
-            <i data-lucide="shield" class="w-5 h-5 text-slate-700"></i>
-          </div>
-          Admin Workspace
-        </h2>
-        <button id="closeAdminBtn" class="p-2.5 hover:bg-slate-50 rounded-xl transition-all duration-300 text-slate-400 hover:text-slate-800">
-            <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
+  <!-- ADMIN MODAL -->
+  <div id="adminModal" class="hidden fixed inset-0 z-[1000005] bg-slate-900/20 backdrop-blur-md flex items-center justify-center p-6 transition-all duration-500">
+    <div class="w-full max-w-2xl bg-white/95 backdrop-blur-3xl border border-white shadow-[0_30px_80px_-20px_rgba(0,0,0,0.15)] rounded-[2.5rem] p-10 sm:p-12 relative">
+      
+      <div class="flex justify-between items-center mb-10">
+        <h2 class="text-xl font-medium text-slate-800 flex items-center gap-3 tracking-wide">
+          <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+            <i data-lucide="shield" class="w-5 h-5 text-slate-700"></i>
+          </div>
+          Admin Workspace
+        </h2>
+        <button id="closeAdminBtn" class="p-2.5 hover:bg-slate-50 rounded-xl transition-all duration-300 text-slate-400 hover:text-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
 
-      <div class="flex flex-col sm:flex-row gap-4 mb-10 bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
-        <input type="text" id="newAdminUser" placeholder="New Username" class="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-xl text-sm focus:outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 transition-all placeholder:text-slate-300">
-        <input type="text" id="newAdminPass" placeholder="Password" class="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-xl text-sm focus:outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 transition-all placeholder:text-slate-300">
-        <button id="addAdminUserBtn" class="bg-slate-900 text-white px-6 py-3.5 rounded-xl hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-900/10 flex items-center justify-center min-w-[3.5rem]">
-            <i data-lucide="plus" class="w-5 h-5"></i>
-        </button>
-      </div>
+      <div class="flex flex-col sm:flex-row gap-4 mb-10 bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
+        <input type="text" id="newAdminUser" placeholder="New Username" class="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-xl text-sm focus:outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 transition-all placeholder:text-slate-300">
+        <input type="text" id="newAdminPass" placeholder="Password" class="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-xl text-sm focus:outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100/50 transition-all placeholder:text-slate-300">
+        <button id="addAdminUserBtn" class="bg-slate-900 text-white px-6 py-3.5 rounded-xl hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-900/10 flex items-center justify-center min-w-[3.5rem]">
+            <i data-lucide="plus" class="w-5 h-5"></i>
+        </button>
+      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h3 class="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
-            <i data-lucide="users" class="w-3 h-3"></i> User Database
-          </h3>
-          <div class="bg-slate-50/50 border border-slate-100 rounded-2xl p-3 h-64 overflow-y-auto">
-            <ul id="userListContainer" class="space-y-2 text-sm"></ul>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
-            <i data-lucide="activity" class="w-3 h-3"></i> System Logs
-          </h3>
-          <div class="bg-slate-50/50 border border-slate-100 rounded-2xl p-3 h-64 overflow-y-auto">
-            <ul id="logListContainer" class="space-y-2 text-[11px]"></ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+            <i data-lucide="users" class="w-3 h-3"></i> User Database
+          </h3>
+          <div class="bg-slate-50/50 border border-slate-100 rounded-2xl p-3 h-64 overflow-y-auto">
+            <ul id="userListContainer" class="space-y-2 text-sm"></ul>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+            <i data-lucide="activity" class="w-3 h-3"></i> System Logs
+          </h3>
+          <div class="bg-slate-50/50 border border-slate-100 rounded-2xl p-3 h-64 overflow-y-auto">
+            <ul id="logListContainer" class="space-y-2 text-[11px]"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    lucide.createIcons();
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
+  <script>
+    lucide.createIcons();
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwnfw-nQ6k0F-pFyxcACsPGhd-_LQAuCEkGiSylYV8NofeNU3N5ZzxxsaAw-w-5io7J_A/exec';
 
-    // --- Vertical Expandable Menu Logic with Icon Swap ---
-    const toggleMenuBtn = document.getElementById('toggleMenuBtn');
-    const expandedMenu = document.getElementById('expandedMenu');
-    const iconOpen = document.getElementById('iconOpen');
-    const iconClose = document.getElementById('iconClose');
-    let isMenuExpanded = false;
+    // --- Vertical Expandable Menu Logic with Icon Swap ---
+    const toggleMenuBtn = document.getElementById('toggleMenuBtn');
+    const expandedMenu = document.getElementById('expandedMenu');
+    const iconOpen = document.getElementById('iconOpen');
+    const iconClose = document.getElementById('iconClose');
+    let isMenuExpanded = false;
 
-    // Add function to toggle menu state
-    function toggleMenu() {
-        isMenuExpanded = !isMenuExpanded;
-        if (isMenuExpanded) {
-            // Show Pop-up Menu
-            expandedMenu.classList.remove('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
-            expandedMenu.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
-            
-            // Swap to Close Icon
-            iconOpen.classList.replace('scale-100', 'scale-50');
-            iconOpen.classList.replace('rotate-0', '-rotate-90');
-            iconOpen.classList.replace('opacity-100', 'opacity-0');
-            
-            iconClose.classList.replace('scale-50', 'scale-100');
-            iconClose.classList.replace('rotate-90', 'rotate-0');
-            iconClose.classList.replace('opacity-0', 'opacity-100');
-        } else {
-            // Hide Pop-up Menu
-            expandedMenu.classList.add('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
-            expandedMenu.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
-            
-            // Swap back to Menu/Grid Icon
-            iconOpen.classList.replace('scale-50', 'scale-100');
-            iconOpen.classList.replace('-rotate-90', 'rotate-0');
-            iconOpen.classList.replace('opacity-0', 'opacity-100');
-            
-            iconClose.classList.replace('scale-100', 'scale-50');
-            iconClose.classList.replace('rotate-0', 'rotate-90');
-            iconClose.classList.replace('opacity-100', 'opacity-0');
-        }
-    }
+    // Add function to toggle menu state
+    function toggleMenu() {
+        isMenuExpanded = !isMenuExpanded;
+        if (isMenuExpanded) {
+            // Show Pop-up Menu
+            expandedMenu.classList.remove('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
+            expandedMenu.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+            
+            // Swap to Close Icon
+            iconOpen.classList.replace('scale-100', 'scale-50');
+            iconOpen.classList.replace('rotate-0', '-rotate-90');
+            iconOpen.classList.replace('opacity-100', 'opacity-0');
+            
+            iconClose.classList.replace('scale-50', 'scale-100');
+            iconClose.classList.replace('rotate-90', 'rotate-0');
+            iconClose.classList.replace('opacity-0', 'opacity-100');
+        } else {
+            // Hide Pop-up Menu
+            expandedMenu.classList.add('opacity-0', 'translate-y-6', 'scale-95', 'pointer-events-none');
+            expandedMenu.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+            
+            // Swap back to Menu/Grid Icon
+            iconOpen.classList.replace('scale-50', 'scale-100');
+            iconOpen.classList.replace('-rotate-90', 'rotate-0');
+            iconOpen.classList.replace('opacity-0', 'opacity-100');
+            
+            iconClose.classList.replace('scale-100', 'scale-50');
+            iconClose.classList.replace('rotate-0', 'rotate-90');
+            iconClose.classList.replace('opacity-100', 'opacity-0');
+        }
+    }
 
-    toggleMenuBtn.addEventListener('click', toggleMenu);
+    toggleMenuBtn.addEventListener('click', toggleMenu);
 
-    // Auto-close menu when a link inside it is clicked
-    const menuLinks = document.querySelectorAll('.menu-link');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (isMenuExpanded) {
-                toggleMenu(); // Fold the menu automatically after selection
-            }
-        });
-    });
+    // Auto-close menu when a link inside it is clicked
+    const menuLinks = document.querySelectorAll('.menu-link');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (isMenuExpanded) {
+                toggleMenu(); // Fold the menu automatically after selection
+            }
+        });
+    });
 
-    async function callAPI(action, payload = {}) {
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: action, ...payload })
-        });
-        return await response.json();
-      } catch (error) {
-        return { success: false, error: "Network Error" };
-      }
-    }
+    async function callAPI(action, payload = {}) {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: action, ...payload })
+        });
+        return await response.json();
+      } catch (error) {
+        return { success: false, error: "Network Error" };
+      }
+    }
 
-    // --- Session Management ---
-    function checkActiveSession() {
-      const activeUser = localStorage.getItem('ppac_active_user');
-      if (activeUser) {
-        document.getElementById('displayUsername').innerText = activeUser;
-        document.getElementById('loginView').classList.add('hidden');
-        document.getElementById('dashboardView').classList.remove('hidden');
-        document.getElementById('dashboardView').classList.add('block');
-      }
-    }
-    checkActiveSession();
+    // --- Session Management ---
+    function checkActiveSession() {
+      const activeUser = localStorage.getItem('ppac_active_user');
+      if (activeUser) {
+        document.getElementById('displayUsername').innerText = activeUser;
+        document.getElementById('loginView').classList.add('hidden');
+        document.getElementById('dashboardView').classList.remove('hidden');
+        document.getElementById('dashboardView').classList.add('block');
+      }
+    }
+    checkActiveSession();
 
-    // --- Login Logic ---
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const user = document.getElementById('username').value.trim();
-        const pass = document.getElementById('password').value.trim();
-        const submitBtn = document.getElementById('submitBtn');
-        const errorMsg = document.getElementById('errorMsg');
-        
-        if(!user || !pass) return;
-        errorMsg.classList.add('hidden');
-        submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div><span class="tracking-[0.1em]">AUTHENTICATING</span>';
-        submitBtn.disabled = true;
+    // --- Login Logic ---
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        if(!user || !pass) return;
+        errorMsg.classList.add('hidden');
+        submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div><span class="tracking-[0.1em]">AUTHENTICATING</span>';
+        submitBtn.disabled = true;
 
-        const result = await callAPI('login', { user: user, pass: pass });
+        const result = await callAPI('login', { user: user, pass: pass });
 
-        if (result.success) {
-            localStorage.setItem('ppac_active_user', user);
-            location.reload(); 
-        } else {
-            document.getElementById('errorText').innerText = result.error ? 'Database connection failed' : 'Incorrect credentials';
-            errorMsg.classList.remove('hidden');
-            errorMsg.classList.add('flex');
-            submitBtn.innerHTML = '<i data-lucide="arrow-right" class="w-4 h-4"></i><span>SIGN IN</span>';
-            lucide.createIcons();
-            submitBtn.disabled = false;
-        }
-    });
+        if (result.success) {
+            localStorage.setItem('ppac_active_user', user);
+            location.reload(); 
+        } else {
+            document.getElementById('errorText').innerText = result.error ? 'Database connection failed' : 'Incorrect credentials';
+            errorMsg.classList.remove('hidden');
+            errorMsg.classList.add('flex');
+            submitBtn.innerHTML = '<i data-lucide="arrow-right" class="w-4 h-4"></i><span>SIGN IN</span>';
+            lucide.createIcons();
+            submitBtn.disabled = false;
+        }
+    });
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('ppac_active_user');
-        location.reload();
-    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('ppac_active_user');
+        location.reload();
+    });
 
-    // --- Secret Admin Panel ---
-    let clicks = 0;
-    document.getElementById('secretTriggerLogin').addEventListener('click', () => {
-      clicks++;
-      if (clicks >= 5) { openAdmin(); clicks = 0; }
-      setTimeout(() => clicks = 0, 2000);
-    });
+    // --- Secret Admin Panel ---
+    let clicks = 0;
+    document.getElementById('secretTriggerLogin').addEventListener('click', () => {
+      clicks++;
+      if (clicks >= 5) { openAdmin(); clicks = 0; }
+      setTimeout(() => clicks = 0, 2000);
+    });
 
-    async function openAdmin() {
-      const modal = document.getElementById('adminModal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      // Adding a small delay for animation effect
-      setTimeout(() => {
-          modal.firstElementChild.classList.add('scale-100', 'opacity-100');
-      }, 10);
-      await Promise.all([renderUsers(), renderLogs()]);
-    }
+    async function openAdmin() {
+      const modal = document.getElementById('adminModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      // Adding a small delay for animation effect
+      setTimeout(() => {
+          modal.firstElementChild.classList.add('scale-100', 'opacity-100');
+      }, 10);
+      await Promise.all([renderUsers(), renderLogs()]);
+    }
 
-    document.getElementById('closeAdminBtn').addEventListener('click', () => {
-      document.getElementById('adminModal').classList.add('hidden');
-    });
+    document.getElementById('closeAdminBtn').addEventListener('click', () => {
+      document.getElementById('adminModal').classList.add('hidden');
+    });
 
-    async function renderUsers() {
-      const res = await callAPI('getUsers');
-      const container = document.getElementById('userListContainer');
-      container.innerHTML = '';
-      if(res.success) {
-        res.users.forEach(u => {
-          const li = document.createElement('li');
-          li.className = "flex justify-between items-center p-3.5 bg-white rounded-xl shadow-sm border border-slate-100 transition-all hover:shadow-md";
-          li.innerHTML = `
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
-                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
-              </div>
-              <div class="flex flex-col">
-                <span class="font-medium text-slate-700">${u.username}</span>
-                <span class="text-[10px] text-slate-400 tracking-widest uppercase">${u.password}</span>
-              </div>
-            </div>
-            ${u.username !== 'admin' ? `<button onclick="deleteUser('${u.username}')" class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-md font-medium tracking-wide">OWNER</span>'}`;
-          container.appendChild(li);
-        });
-        lucide.createIcons();
-      }
-    }
+    async function renderUsers() {
+      const res = await callAPI('getUsers');
+      const container = document.getElementById('userListContainer');
+      container.innerHTML = '';
+      if(res.success) {
+        res.users.forEach(u => {
+          const li = document.createElement('li');
+          li.className = "flex justify-between items-center p-3.5 bg-white rounded-xl shadow-sm border border-slate-100 transition-all hover:shadow-md";
+          li.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-medium text-slate-700">${u.username}</span>
+                <span class="text-[10px] text-slate-400 tracking-widest uppercase">${u.password}</span>
+              </div>
+            </div>
+            ${u.username !== 'admin' ? `<button onclick="deleteUser('${u.username}')" class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-md font-medium tracking-wide">OWNER</span>'}`;
+          container.appendChild(li);
+        });
+        lucide.createIcons();
+      }
+    }
 
-    async function renderLogs() {
-      const res = await callAPI('getLogs');
-      const container = document.getElementById('logListContainer');
-      container.innerHTML = '';
-      if(res.success) {
-        res.logs.forEach(l => {
-          const li = document.createElement('li');
-          li.className = "p-3 bg-white rounded-xl border border-slate-100 mb-2 shadow-sm flex flex-col gap-1";
-          const isSuccess = l.status === 'Success';
-          li.innerHTML = `
-            <div class="flex justify-between items-center">
-              <span class="font-medium text-slate-700">${l.username}</span> 
-              <span class="${isSuccess ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'} px-2 py-0.5 rounded-md text-[9px] font-medium tracking-wide uppercase">${l.status}</span>
-            </div>
-            <div class="text-[10px] text-slate-400 font-light tracking-wide">${l.time}</div>`;
-          container.appendChild(li);
-        });
-      }
-    }
+    async function renderLogs() {
+      const res = await callAPI('getLogs');
+      const container = document.getElementById('logListContainer');
+      container.innerHTML = '';
+      if(res.success) {
+        res.logs.forEach(l => {
+          const li = document.createElement('li');
+          li.className = "p-3 bg-white rounded-xl border border-slate-100 mb-2 shadow-sm flex flex-col gap-1";
+          const isSuccess = l.status === 'Success';
+          li.innerHTML = `
+            <div class="flex justify-between items-center">
+              <span class="font-medium text-slate-700">${l.username}</span> 
+              <span class="${isSuccess ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'} px-2 py-0.5 rounded-md text-[9px] font-medium tracking-wide uppercase">${l.status}</span>
+            </div>
+            <div class="text-[10px] text-slate-400 font-light tracking-wide">${l.time}</div>`;
+          container.appendChild(li);
+        });
+      }
+    }
 
-    window.deleteUser = async (user) => {
-      if(confirm(`Delete user: ${user}?`)) {
-        await callAPI('deleteUser', { user: user });
-        renderUsers();
-      }
-    }
+    window.deleteUser = async (user) => {
+      if(confirm(`Delete user: ${user}?`)) {
+        await callAPI('deleteUser', { user: user });
+        renderUsers();
+      }
+    }
 
-    document.getElementById('addAdminUserBtn').addEventListener('click', async () => {
-      const btn = document.getElementById('addAdminUserBtn');
-      const u = document.getElementById('newAdminUser').value;
-      const p = document.getElementById('newAdminPass').value;
-      
-      if(u && p) {
-        btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
-        await callAPI('addUser', { user: u, pass: p });
-        document.getElementById('newAdminUser').value = '';
-        document.getElementById('newAdminPass').value = '';
-        await renderUsers();
-        btn.innerHTML = '<i data-lucide="plus" class="w-5 h-5"></i>';
-        lucide.createIcons();
-      }
-    });
-  </script>
+    document.getElementById('addAdminUserBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('addAdminUserBtn');
+      const u = document.getElementById('newAdminUser').value;
+      const p = document.getElementById('newAdminPass').value;
+      
+      if(u && p) {
+        btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+        await callAPI('addUser', { user: u, pass: p });
+        document.getElementById('newAdminUser').value = '';
+        document.getElementById('newAdminPass').value = '';
+        await renderUsers();
+        btn.innerHTML = '<i data-lucide="plus" class="w-5 h-5"></i>';
+        lucide.createIcons();
+      }
+    });
+  </script>
 </body>
 </html>
